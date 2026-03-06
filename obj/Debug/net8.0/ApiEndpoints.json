@@ -1,0 +1,53 @@
+[
+  {
+    "ContainingType": "Sportify.Controllers.SportApiController",
+    "Method": "Dashboard",
+    "RelativePath": "api/sport/dashboard",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Sportify.Controllers.SportApiController",
+    "Method": "LiveMatches",
+    "RelativePath": "api/sport/live",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Sportify.Controllers.SportApiController",
+    "Method": "Standings",
+    "RelativePath": "api/sport/standings",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "leagueId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "season",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Sportify.Controllers.SportApiController",
+    "Method": "TodayMatches",
+    "RelativePath": "api/sport/today",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]

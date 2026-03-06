@@ -1,0 +1,111 @@
+@model List<Sportify.Models.Standing>
+@{
+    ViewData["Title"] = "Puan Durumu";
+    var leagueId = ViewBag.LeagueId as int? ?? 39;
+}
+
+<div class="section-title">🏆 Puan Durumu</div>
+<div class="section-subtitle">2024/25 Sezonu • Her 60 saniyede güncellenir</div>
+
+<!-- League Selector -->
+<div class="league-selector">
+    <a href="/Standings?leagueId=39" class="league-btn @(leagueId == 39 ? "active" : "")">
+        <img src="https://media.api-sports.io/football/leagues/39.png" alt="" onerror="this.style.display='none'" />
+        Premier League
+    </a>
+    <a href="/Standings?leagueId=140" class="league-btn @(leagueId == 140 ? "active" : "")">
+        <img src="https://media.api-sports.io/football/leagues/140.png" alt="" onerror="this.style.display='none'" />
+        La Liga
+    </a>
+    <a href="/Standings?leagueId=78" class="league-btn @(leagueId == 78 ? "active" : "")">
+        <img src="https://media.api-sports.io/football/leagues/78.png" alt="" onerror="this.style.display='none'" />
+        Bundesliga
+    </a>
+    <a href="/Standings?leagueId=135" class="league-btn @(leagueId == 135 ? "active" : "")">
+        <img src="https://media.api-sports.io/football/leagues/135.png" alt="" onerror="this.style.display='none'" />
+        Serie A
+    </a>
+    <a href="/Standings?leagueId=61" class="league-btn @(leagueId == 61 ? "active" : "")">
+        <img src="https://media.api-sports.io/football/leagues/61.png" alt="" onerror="this.style.display='none'" />
+        Ligue 1
+    </a>
+    <a href="/Standings?leagueId=203" class="league-btn @(leagueId == 203 ? "active" : "")">
+        <img src="https://media.api-sports.io/football/leagues/203.png" alt="" onerror="this.style.display='none'" />
+        Süper Lig
+    </a>
+</div>
+
+<div class="card">
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <p>Bu lig için veri bulunamadı</p>
+        </div>
+    }
+    else
+    {
+        <table class="standings-table">
+            <thead>
+                <tr>
+                    <th style="width:40px">#</th>
+                    <th>Takım</th>
+                    <th class="center">O</th>
+                    <th class="center">G</th>
+                    <th class="center">B</th>
+                    <th class="center">M</th>
+                    <th class="center">AG</th>
+                    <th class="center">YG</th>
+                    <th class="center">A</th>
+                    <th class="center">P</th>
+                    <th class="center" style="min-width:110px">Son 5</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model)
+                {
+                    var rankClass = s.Rank <= 4 ? "rank-cl" : (s.Description?.Contains("Europa") == true ? "rank-el" : (s.Description?.Contains("Relegation") == true ? "rank-rel" : ""));
+                    <tr class="fade-in @(s.Rank <= 4 ? "highlight-row" : "")">
+                        <td><div class="rank-num @rankClass">@s.Rank</div></td>
+                        <td>
+                            <div class="team-cell">
+                                @if (!string.IsNullOrEmpty(s.TeamLogo))
+                                {
+                                    <img src="@s.TeamLogo" alt="@s.TeamName" onerror="this.style.display='none'" />
+                                }
+                                <span>@s.TeamName</span>
+                            </div>
+                        </td>
+                        <td class="center">@s.Played</td>
+                        <td class="center" style="color:var(--win-green);font-weight:700">@s.Won</td>
+                        <td class="center" style="color:var(--draw-yellow);font-weight:700">@s.Drawn</td>
+                        <td class="center" style="color:var(--loss-red);font-weight:700">@s.Lost</td>
+                        <td class="center">@s.GoalsFor</td>
+                        <td class="center">@s.GoalsAgainst</td>
+                        <td class="center" style="font-weight:700;color:@(s.GoalDiff > 0 ? "var(--win-green)" : s.GoalDiff < 0 ? "var(--loss-red)" : "var(--text-secondary)")">
+                            @(s.GoalDiff > 0 ? "+" : "")@s.GoalDiff
+                        </td>
+                        <td class="center"><span class="points-badge">@s.Points</span></td>
+                        <td>
+                            <div class="form-badges">
+                                @if (!string.IsNullOrEmpty(s.Form))
+                                {
+                                    @foreach (var ch in s.Form.TakeLast(5))
+                                    {
+                                        <div class="form-badge @ch">@ch</div>
+                                    }
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div style="margin-top:20px;display:flex;gap:20px;font-size:12px;color:var(--text-muted);flex-wrap:wrap">
+            <span><span style="color:var(--accent);font-weight:700">●</span> Şampiyonlar Ligi</span>
+            <span><span style="color:var(--win-green);font-weight:700">●</span> Avrupa Ligi</span>
+            <span><span style="color:var(--loss-red);font-weight:700">●</span> Küme Düşme</span>
+        </div>
+    }
+</div>

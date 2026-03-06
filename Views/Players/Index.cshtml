@@ -1,0 +1,80 @@
+@model List<Sportify.Models.Player>
+@{
+    ViewData["Title"] = "Gol Krallığı";
+    var leagueId = ViewBag.LeagueId as int? ?? 39;
+}
+
+<div class="section-title">⚡ Gol Krallığı</div>
+<div class="section-subtitle">2024/25 Sezonu • Premier League</div>
+
+<div class="league-selector">
+    <a href="/Players?leagueId=39" class="league-btn @(leagueId == 39 ? "active" : "")">
+        <img src="https://media.api-sports.io/football/leagues/39.png" alt="" onerror="this.style.display='none'" />
+        Premier League
+    </a>
+    <a href="/Players?leagueId=140" class="league-btn @(leagueId == 140 ? "active" : "")">
+        <img src="https://media.api-sports.io/football/leagues/140.png" alt="" onerror="this.style.display='none'" />
+        La Liga
+    </a>
+    <a href="/Players?leagueId=78" class="league-btn @(leagueId == 78 ? "active" : "")">
+        <img src="https://media.api-sports.io/football/leagues/78.png" alt="" onerror="this.style.display='none'" />
+        Bundesliga
+    </a>
+    <a href="/Players?leagueId=135" class="league-btn @(leagueId == 135 ? "active" : "")">
+        <img src="https://media.api-sports.io/football/leagues/135.png" alt="" onerror="this.style.display='none'" />
+        Serie A
+    </a>
+    <a href="/Players?leagueId=203" class="league-btn @(leagueId == 203 ? "active" : "")">
+        <img src="https://media.api-sports.io/football/leagues/203.png" alt="" onerror="this.style.display='none'" />
+        Süper Lig
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card">
+        <div class="empty-state">
+            <div class="empty-icon">⚽</div>
+            <p>Bu lig için gol krallığı verisi bulunamadı</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="players-grid">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var p = Model[i];
+            <a href="/Players/Detail/@p.Id" class="player-card fade-in">
+                <div class="player-rank">@(i + 1)</div>
+                <img class="player-photo" src="@p.Photo" alt="@p.Name" onerror="this.src='https://via.placeholder.com/80x80/1a2236/8896b3?text=?'" />
+                <div class="player-name">@p.Name</div>
+                <div class="player-meta">
+                    @if (!string.IsNullOrEmpty(p.TeamLogo))
+                    {
+                        <img src="@p.TeamLogo" alt="@p.TeamName" onerror="this.style.display='none'" />
+                    }
+                    @p.TeamName
+                </div>
+                @if (p.Stats?.Rating > 0)
+                {
+                    <div class="rating-badge">⭐ @p.Stats.Rating.ToString("F2")</div>
+                }
+                <div class="player-stats-row">
+                    <div class="player-stat-item">
+                        <div class="player-stat-val">@(p.Stats?.Goals ?? 0)</div>
+                        <div class="player-stat-lbl">Gol</div>
+                    </div>
+                    <div class="player-stat-item">
+                        <div class="player-stat-val">@(p.Stats?.Assists ?? 0)</div>
+                        <div class="player-stat-lbl">Asist</div>
+                    </div>
+                    <div class="player-stat-item">
+                        <div class="player-stat-val">@(p.Stats?.Appearances ?? 0)</div>
+                        <div class="player-stat-lbl">Maç</div>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+}

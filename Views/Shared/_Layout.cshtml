@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sportify</title>
+    <meta name="description" content="Anlık spor istatistikleri, puan durumu ve maç sonuçları" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/sportify.css" asp-append-version="true" />
+</head>
+<body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">⚽</div>
+            <h1>Sportify</h1>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Ana Menü</div>
+            <a href="/" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                <span class="nav-icon">🏠</span> Dashboard
+            </a>
+            <a href="/Standings" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Standings" ? "active" : "")">
+                <span class="nav-icon">🏆</span> Puan Durumu
+            </a>
+            <a href="/Players" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Players" ? "active" : "")">
+                <span class="nav-icon">⚡</span> Gol Krallığı
+            </a>
+            <a href="/Teams" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Teams" ? "active" : "")">
+                <span class="nav-icon">🛡️</span> Takımlar
+            </a>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Ligler</div>
+            <a href="/Standings?leagueId=39" class="nav-item">
+                <span class="nav-icon">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> Premier League
+            </a>
+            <a href="/Standings?leagueId=140" class="nav-item">
+                <span class="nav-icon">🇪🇸</span> La Liga
+            </a>
+            <a href="/Standings?leagueId=78" class="nav-item">
+                <span class="nav-icon">🇩🇪</span> Bundesliga
+            </a>
+            <a href="/Standings?leagueId=135" class="nav-item">
+                <span class="nav-icon">🇮🇹</span> Serie A
+            </a>
+            <a href="/Standings?leagueId=61" class="nav-item">
+                <span class="nav-icon">🇫🇷</span> Ligue 1
+            </a>
+            <a href="/Standings?leagueId=203" class="nav-item">
+                <span class="nav-icon">🇹🇷</span> Süper Lig
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            Veriler API-Football üzerinden<br/>Her 60 saniyede güncellenir
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main-content">
+        <header class="topbar">
+            <div class="topbar-title">@ViewData["Title"]</div>
+            <div class="topbar-right">
+                <div class="last-updated">
+                    <span class="dot"></span>
+                    Son güncelleme: <span id="last-updated-time">--:--:--</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="page-body">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/js/sportify.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

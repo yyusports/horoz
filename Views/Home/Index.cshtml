@@ -1,0 +1,225 @@
+﻿@model Sportify.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    var liveCount = Model.LiveMatches.Count;
+    var todayCount = Model.TodayMatches.Count;
+}
+
+<!-- STAT CARDS -->
+<div class="stat-grid">
+    <div class="stat-card fade-in">
+        <div class="stat-icon red">🔴</div>
+        <div>
+            <div class="stat-value" data-count="@liveCount">0</div>
+            <div class="stat-label">Canlı Maç</div>
+        </div>
+    </div>
+    <div class="stat-card fade-in">
+        <div class="stat-icon blue">📅</div>
+        <div>
+            <div class="stat-value" data-count="@todayCount">0</div>
+            <div class="stat-label">Bugünkü Maç</div>
+        </div>
+    </div>
+    <div class="stat-card fade-in">
+        <div class="stat-icon green">🏆</div>
+        <div>
+            <div class="stat-value" data-count="20">0</div>
+            <div class="stat-label">Takım (Premier League)</div>
+        </div>
+    </div>
+    <div class="stat-card fade-in">
+        <div class="stat-icon purple">⚡</div>
+        <div>
+            <div class="stat-value" data-count="@(Model.TopScorers.FirstOrDefault()?.Stats?.Goals ?? 0)">0</div>
+            <div class="stat-label">Lider Gol Sayısı</div>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <!-- LEFT COLUMN -->
+    <div class="dashboard-col">
+
+        <!-- LIVE MATCHES -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">🔴 Canlı Maçlar <span class="live-badge">CANLI</span></div>
+                <a href="#" onclick="pollLiveMatches(); return false;" class="section-link">↻ Yenile</a>
+            </div>
+            <div id="live-matches-container">
+                @if (!Model.LiveMatches.Any())
+                {
+                    <div class="empty-state">
+                        <div class="empty-icon">🎽</div>
+                        <p>Şu an canlı maç bulunmuyor</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="matches-grid">
+                        @foreach (var m in Model.LiveMatches)
+                        {
+                            <div class="match-card live fade-in">
+                                <div class="match-league">
+                                    @if (!string.IsNullOrEmpty(m.LeagueLogo))
+                                    {
+                                        <img src="@m.LeagueLogo" alt="" onerror="this.style.display='none'" />
+                                    }
+                                    @m.LeagueName
+                                    <span class="match-status-badge live">🔴 CANLI</span>
+                                </div>
+                                <div class="match-teams">
+                                    <div class="match-team">
+                                        <img src="@m.HomeTeamLogo" alt="@m.HomeTeam" onerror="this.style.display='none'" />
+                                        <div class="match-team-name">@m.HomeTeam</div>
+                                    </div>
+                                    <div class="match-score">
+                                        <div class="score-num">@(m.HomeScore?.ToString() ?? "-")</div>
+                                        <div class="score-sep">:</div>
+                                        <div class="score-num">@(m.AwayScore?.ToString() ?? "-")</div>
+                                    </div>
+                                    <div class="match-team">
+                                        <img src="@m.AwayTeamLogo" alt="@m.AwayTeam" onerror="this.style.display='none'" />
+                                        <div class="match-team-name">@m.AwayTeam</div>
+                                    </div>
+                                </div>
+                                @if (m.Minute.HasValue)
+                                {
+                                    <div class="match-minute">⏱ @m.Minute'</div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- TODAY'S MATCHES -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">📅 Bugünkü Maçlar</div>
+                <a href="#" onclick="pollTodayMatches(); return false;" class="section-link">↻ Yenile</a>
+            </div>
+            <div id="today-matches-container">
+                @if (!Model.TodayMatches.Any())
+                {
+                    <div class="empty-state">
+                        <div class="empty-icon">📅</div>
+                        <p>Bugün için maç bulunmuyor</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="matches-grid">
+                        @foreach (var m in Model.TodayMatches)
+                        {
+                            var isLive = m.Status == "1H" || m.Status == "2H" || m.Status == "HT";
+                            var isFT = m.Status == "FT";
+                            <div class="match-card @(isLive ? "live" : "") fade-in">
+                                <div class="match-league">
+                                    @if (!string.IsNullOrEmpty(m.LeagueLogo))
+                                    {
+                                        <img src="@m.LeagueLogo" alt="" onerror="this.style.display='none'" />
+                                    }
+                                    @m.LeagueName
+                                    @if (isLive)
+                                    {
+                                        <span class="match-status-badge live">🔴 CANLI</span>
+                                    }
+                                    else if (isFT)
+                                    {
+                                        <span class="match-status-badge ft">Bitti</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="match-status-badge ns">@m.Date.ToString("HH:mm")</span>
+                                    }
+                                </div>
+                                <div class="match-teams">
+                                    <div class="match-team">
+                                        <img src="@m.HomeTeamLogo" alt="@m.HomeTeam" onerror="this.style.display='none'" />
+                                        <div class="match-team-name">@m.HomeTeam</div>
+                                    </div>
+                                    <div class="match-score">
+                                        @if (m.HomeScore.HasValue)
+                                        {
+                                            <div class="score-num">@m.HomeScore</div>
+                                            <div class="score-sep">:</div>
+                                            <div class="score-num">@m.AwayScore</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="score-num" style="font-size:14px;color:var(--text-secondary)">vs</div>
+                                        }
+                                    </div>
+                                    <div class="match-team">
+                                        <img src="@m.AwayTeamLogo" alt="@m.AwayTeam" onerror="this.style.display='none'" />
+                                        <div class="match-team-name">@m.AwayTeam</div>
+                                    </div>
+                                </div>
+                                @if (m.Minute.HasValue && isLive)
+                                {
+                                    <div class="match-minute">⏱ @m.Minute'</div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="dashboard-col">
+
+        <!-- TOP 5 STANDINGS -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">🏆 Puan Durumu</div>
+                <a href="/Standings" class="section-link">Tümü →</a>
+            </div>
+            @foreach (var s in Model.TopStandings)
+            {
+                <div class="mini-standing-row">
+                    <div class="mini-rank @(s.Rank <= 4 ? "rank-cl" : s.Rank >= 18 ? "rank-rel" : "")">@s.Rank</div>
+                    @if (!string.IsNullOrEmpty(s.TeamLogo))
+                    {
+                        <img class="mini-team-logo" src="@s.TeamLogo" alt="@s.TeamName" onerror="this.style.display='none'" />
+                    }
+                    <div class="mini-team-name">@s.TeamName</div>
+                    <div class="mini-pts">@s.Points</div>
+                </div>
+            }
+            <a href="/Standings" class="section-link" style="display:block;text-align:center;margin-top:16px;">Tam Tabloyu Gör →</a>
+        </div>
+
+        <!-- TOP SCORERS -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">⚡ Gol Krallığı</div>
+                <a href="/Players" class="section-link">Tümü →</a>
+            </div>
+            @foreach (var p in Model.TopScorers)
+            {
+                <div class="top-scorer-row">
+                    @if (!string.IsNullOrEmpty(p.Photo))
+                    {
+                        <img class="top-scorer-photo" src="@p.Photo" alt="@p.Name" onerror="this.style.display='none'" />
+                    }
+                    <div class="top-scorer-info">
+                        <div class="top-scorer-name">@p.Name</div>
+                        <div class="top-scorer-team">@p.TeamName</div>
+                    </div>
+                    <div style="text-align:center">
+                        <div class="top-scorer-goals">@(p.Stats?.Goals ?? 0)</div>
+                        <div class="top-scorer-goal-lbl">GOL</div>
+                    </div>
+                </div>
+            }
+            <a href="/Players" class="section-link" style="display:block;text-align:center;margin-top:16px;">Tüm Gol Krallığı →</a>
+        </div>
+
+    </div>
+</div>
