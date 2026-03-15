@@ -1,109 +1,115 @@
 namespace Sportify.Models
 {
-    public class Team
+    public class Takim
     {
         public int Id { get; set; }
-        public string Name { get; set; } = "";
+        public string Ad { get; set; } = "";
         public string Logo { get; set; } = "";
-        public string Country { get; set; } = "";
-        public int Founded { get; set; }
-        public string Stadium { get; set; } = "";
-        public TeamStats? Stats { get; set; }
+        public string Ulke { get; set; } = "";
+        public int KurulusYili { get; set; }
+        public string Stadyum { get; set; } = "";
+        public TakimIstatistikleri? Istatistikler { get; set; }
     }
 
-    public class TeamStats
+    public class TakimIstatistikleri
     {
-        public int Played { get; set; }
-        public int Won { get; set; }
-        public int Drawn { get; set; }
-        public int Lost { get; set; }
-        public int GoalsFor { get; set; }
-        public int GoalsAgainst { get; set; }
-        public int GoalDiff => GoalsFor - GoalsAgainst;
-        public int Points => Won * 3 + Drawn;
-        public double WinRate => Played > 0 ? Math.Round((double)Won / Played * 100, 1) : 0;
+        public int Oynanan { get; set; }
+        public int Galibiyet { get; set; }
+        public int Beraberlik { get; set; }
+        public int Maglubiyet { get; set; }
+        public int AtilanGol { get; set; }
+        public int YenilenGol { get; set; }
+        public int GolFarki => AtilanGol - YenilenGol;
+        public int Puan => Galibiyet * 3 + Beraberlik;
+        public double GalibiyetOrani => Oynanan > 0 ? Math.Round((double)Galibiyet / Oynanan * 100, 1) : 0;
     }
 
-    public class Player
+    public class Oyuncu
     {
         public int Id { get; set; }
-        public string Name { get; set; } = "";
-        public string Photo { get; set; } = "";
-        public string Nationality { get; set; } = "";
-        public int Age { get; set; }
-        public string Position { get; set; } = "";
-        public string TeamName { get; set; } = "";
-        public string TeamLogo { get; set; } = "";
-        public PlayerStats? Stats { get; set; }
+        public string Ad { get; set; } = "";
+        public string Foto { get; set; } = "";
+        public string Uyruk { get; set; } = "";
+        public int Yas { get; set; }
+        public string Mevki { get; set; } = "";
+        public string TakimAdi { get; set; } = "";
+        public string TakimLogo { get; set; } = "";
+        public OyuncuIstatistikleri? Istatistikler { get; set; }
     }
 
-    public class PlayerStats
+    public class OyuncuIstatistikleri
     {
-        public int Appearances { get; set; }
-        public int Goals { get; set; }
-        public int Assists { get; set; }
-        public int YellowCards { get; set; }
-        public int RedCards { get; set; }
-        public double Rating { get; set; }
-        public int MinutesPlayed { get; set; }
-        public int Shots { get; set; }
-        public int ShotsOnTarget { get; set; }
-        public int Passes { get; set; }
-        public double PassAccuracy { get; set; }
+        public int MacSayisi { get; set; }
+        public int Goller { get; set; }
+        public int Asistler { get; set; }
+        public int SariKartlar { get; set; }
+        public int KirmiziKartlar { get; set; }
+        public double Reyting { get; set; }
+        public int OynananDakika { get; set; }
+        public int Sutlar { get; set; }
+        public int IsabetliSutlar { get; set; }
+        public int Paslar { get; set; }
+        public double PasIsabeti { get; set; }
     }
 
-    public class Standing
+    public class PuanDurumu
     {
-        public int Rank { get; set; }
-        public int TeamId { get; set; }
-        public string TeamName { get; set; } = "";
-        public string TeamLogo { get; set; } = "";
-        public int Played { get; set; }
-        public int Won { get; set; }
-        public int Drawn { get; set; }
-        public int Lost { get; set; }
-        public int GoalsFor { get; set; }
-        public int GoalsAgainst { get; set; }
-        public int GoalDiff { get; set; }
-        public int Points { get; set; }
+        public int Sira { get; set; }
+        public int TakimId { get; set; }
+        public string TakimAdi { get; set; } = "";
+        public string TakimLogo { get; set; } = "";
+        public int Oynanan { get; set; }
+        public int Galibiyet { get; set; }
+        public int Beraberlik { get; set; }
+        public int Maglubiyet { get; set; }
+        public int AtilanGol { get; set; }
+        public int YenilenGol { get; set; }
+        public int GolFarki { get; set; }
+        public int Puan { get; set; }
         public string Form { get; set; } = "";
-        public string Description { get; set; } = "";
+        public string Aciklama { get; set; } = "";
     }
 
-    public class League
+    public class Lig
     {
         public int Id { get; set; }
-        public string Name { get; set; } = "";
+        public string Ad { get; set; } = "";
         public string Logo { get; set; } = "";
-        public string Country { get; set; } = "";
-        public string Flag { get; set; } = "";
-        public int Season { get; set; }
-        public List<Standing> Standings { get; set; } = new();
+        public string Ulke { get; set; } = "";
+        public string Bayrak { get; set; } = "";
+        public int Sezon { get; set; }
+        public List<PuanDurumu> PuanDurumlari { get; set; } = new();
     }
 
-    public class Match
+    public class Mac
     {
         public int Id { get; set; }
-        public string HomeTeam { get; set; } = "";
-        public string AwayTeam { get; set; } = "";
-        public string HomeTeamLogo { get; set; } = "";
-        public string AwayTeamLogo { get; set; } = "";
-        public int? HomeScore { get; set; }
-        public int? AwayScore { get; set; }
-        public string Status { get; set; } = "";
-        public string LeagueName { get; set; } = "";
-        public string LeagueLogo { get; set; } = "";
-        public DateTime Date { get; set; }
-        public int? Minute { get; set; }
+        public string EvSahibi { get; set; } = "";
+        public string Deplasman { get; set; } = "";
+        public string EvSahibiLogo { get; set; } = "";
+        public string DeplasmanLogo { get; set; } = "";
+        public int? EvSahibiSkor { get; set; }
+        public int? DeplasmanSkor { get; set; }
+        public string Durum { get; set; } = "";
+        public string LigAdi { get; set; } = "";
+        public string LigLogo { get; set; } = "";
+        public DateTime Tarih { get; set; }
+        public int? Dakika { get; set; }
     }
 
     public class DashboardViewModel
     {
-        public List<Match> LiveMatches { get; set; } = new();
-        public List<Match> TodayMatches { get; set; } = new();
-        public List<Standing> TopStandings { get; set; } = new();
-        public List<Player> TopScorers { get; set; } = new();
-        public string LeagueName { get; set; } = "";
-        public DateTime LastUpdated { get; set; } = DateTime.Now;
+        public List<Mac> CanliMaclar { get; set; } = new();
+        public List<Mac> BugunMaclar { get; set; } = new();
+        public List<PuanDurumu> UstSiraPuanDurumu { get; set; } = new();
+        public List<Oyuncu> GolKralligi { get; set; } = new();
+        public string LigAdi { get; set; } = "";
+        public DateTime SonGuncelleme { get; set; } = DateTime.Now;
+    }
+
+    public class TeamsViewModel
+    {
+        public Dictionary<string, List<Takim>> LeaguedTeams { get; set; } = new();
+        public HashSet<int> FavoriteTeamIds { get; set; } = new();
     }
 }

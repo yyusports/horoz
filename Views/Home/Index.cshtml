@@ -1,8 +1,8 @@
-﻿@model Sportify.Models.DashboardViewModel
+@model Sportify.Models.DashboardViewModel
 @{
     ViewData["Title"] = "Dashboard";
-    var liveCount = Model.LiveMatches.Count;
-    var todayCount = Model.TodayMatches.Count;
+    var liveCount = Model.CanliMaclar.Count;
+    var todayCount = Model.BugunMaclar.Count;
 }
 
 <!-- STAT CARDS -->
@@ -21,20 +21,6 @@
             <div class="stat-label">Bugünkü Maç</div>
         </div>
     </div>
-    <div class="stat-card fade-in">
-        <div class="stat-icon green">🏆</div>
-        <div>
-            <div class="stat-value" data-count="20">0</div>
-            <div class="stat-label">Takım (Premier League)</div>
-        </div>
-    </div>
-    <div class="stat-card fade-in">
-        <div class="stat-icon purple">⚡</div>
-        <div>
-            <div class="stat-value" data-count="@(Model.TopScorers.FirstOrDefault()?.Stats?.Goals ?? 0)">0</div>
-            <div class="stat-label">Lider Gol Sayısı</div>
-        </div>
-    </div>
 </div>
 
 <div class="dashboard-grid">
@@ -48,7 +34,7 @@
                 <a href="#" onclick="pollLiveMatches(); return false;" class="section-link">↻ Yenile</a>
             </div>
             <div id="live-matches-container">
-                @if (!Model.LiveMatches.Any())
+                @if (!Model.CanliMaclar.Any())
                 {
                     <div class="empty-state">
                         <div class="empty-icon">🎽</div>
@@ -58,35 +44,35 @@
                 else
                 {
                     <div class="matches-grid">
-                        @foreach (var m in Model.LiveMatches)
+                        @foreach (var m in Model.CanliMaclar)
                         {
                             <div class="match-card live fade-in">
                                 <div class="match-league">
-                                    @if (!string.IsNullOrEmpty(m.LeagueLogo))
+                                    @if (!string.IsNullOrEmpty(m.LigLogo))
                                     {
-                                        <img src="@m.LeagueLogo" alt="" onerror="this.style.display='none'" />
+                                        <img src="@m.LigLogo" alt="" onerror="this.style.display='none'" />
                                     }
-                                    @m.LeagueName
+                                    @m.LigAdi
                                     <span class="match-status-badge live">🔴 CANLI</span>
                                 </div>
                                 <div class="match-teams">
                                     <div class="match-team">
-                                        <img src="@m.HomeTeamLogo" alt="@m.HomeTeam" onerror="this.style.display='none'" />
-                                        <div class="match-team-name">@m.HomeTeam</div>
+                                        <img src="@m.EvSahibiLogo" alt="@m.EvSahibi" onerror="this.style.display='none'" />
+                                        <div class="match-team-name">@m.EvSahibi</div>
                                     </div>
                                     <div class="match-score">
-                                        <div class="score-num">@(m.HomeScore?.ToString() ?? "-")</div>
+                                        <div class="score-num">@(m.EvSahibiSkor?.ToString() ?? "-")</div>
                                         <div class="score-sep">:</div>
-                                        <div class="score-num">@(m.AwayScore?.ToString() ?? "-")</div>
+                                        <div class="score-num">@(m.DeplasmanSkor?.ToString() ?? "-")</div>
                                     </div>
                                     <div class="match-team">
-                                        <img src="@m.AwayTeamLogo" alt="@m.AwayTeam" onerror="this.style.display='none'" />
-                                        <div class="match-team-name">@m.AwayTeam</div>
+                                        <img src="@m.DeplasmanLogo" alt="@m.Deplasman" onerror="this.style.display='none'" />
+                                        <div class="match-team-name">@m.Deplasman</div>
                                     </div>
                                 </div>
-                                @if (m.Minute.HasValue)
+                                @if (m.Dakika.HasValue)
                                 {
-                                    <div class="match-minute">⏱ @m.Minute'</div>
+                                    <div class="match-minute">⏱ @m.Dakika'</div>
                                 }
                             </div>
                         }
@@ -102,7 +88,7 @@
                 <a href="#" onclick="pollTodayMatches(); return false;" class="section-link">↻ Yenile</a>
             </div>
             <div id="today-matches-container">
-                @if (!Model.TodayMatches.Any())
+                @if (!Model.BugunMaclar.Any())
                 {
                     <div class="empty-state">
                         <div class="empty-icon">📅</div>
@@ -112,17 +98,17 @@
                 else
                 {
                     <div class="matches-grid">
-                        @foreach (var m in Model.TodayMatches)
+                        @foreach (var m in Model.BugunMaclar)
                         {
-                            var isLive = m.Status == "1H" || m.Status == "2H" || m.Status == "HT";
-                            var isFT = m.Status == "FT";
+                            var isLive = m.Durum == "1H" || m.Durum == "2H" || m.Durum == "HT";
+                            var isFT = m.Durum == "FT";
                             <div class="match-card @(isLive ? "live" : "") fade-in">
                                 <div class="match-league">
-                                    @if (!string.IsNullOrEmpty(m.LeagueLogo))
+                                    @if (!string.IsNullOrEmpty(m.LigLogo))
                                     {
-                                        <img src="@m.LeagueLogo" alt="" onerror="this.style.display='none'" />
+                                        <img src="@m.LigLogo" alt="" onerror="this.style.display='none'" />
                                     }
-                                    @m.LeagueName
+                                    @m.LigAdi
                                     @if (isLive)
                                     {
                                         <span class="match-status-badge live">🔴 CANLI</span>
@@ -133,20 +119,20 @@
                                     }
                                     else
                                     {
-                                        <span class="match-status-badge ns">@m.Date.ToString("HH:mm")</span>
+                                        <span class="match-status-badge ns">@m.Tarih.ToString("HH:mm")</span>
                                     }
                                 </div>
                                 <div class="match-teams">
                                     <div class="match-team">
-                                        <img src="@m.HomeTeamLogo" alt="@m.HomeTeam" onerror="this.style.display='none'" />
-                                        <div class="match-team-name">@m.HomeTeam</div>
+                                        <img src="@m.EvSahibiLogo" alt="@m.EvSahibi" onerror="this.style.display='none'" />
+                                        <div class="match-team-name">@m.EvSahibi</div>
                                     </div>
                                     <div class="match-score">
-                                        @if (m.HomeScore.HasValue)
+                                        @if (m.EvSahibiSkor.HasValue)
                                         {
-                                            <div class="score-num">@m.HomeScore</div>
+                                            <div class="score-num">@m.EvSahibiSkor</div>
                                             <div class="score-sep">:</div>
-                                            <div class="score-num">@m.AwayScore</div>
+                                            <div class="score-num">@m.DeplasmanSkor</div>
                                         }
                                         else
                                         {
@@ -154,13 +140,13 @@
                                         }
                                     </div>
                                     <div class="match-team">
-                                        <img src="@m.AwayTeamLogo" alt="@m.AwayTeam" onerror="this.style.display='none'" />
-                                        <div class="match-team-name">@m.AwayTeam</div>
+                                        <img src="@m.DeplasmanLogo" alt="@m.Deplasman" onerror="this.style.display='none'" />
+                                        <div class="match-team-name">@m.Deplasman</div>
                                     </div>
                                 </div>
-                                @if (m.Minute.HasValue && isLive)
+                                @if (m.Dakika.HasValue && isLive)
                                 {
-                                    <div class="match-minute">⏱ @m.Minute'</div>
+                                    <div class="match-minute">⏱ @m.Dakika'</div>
                                 }
                             </div>
                         }
@@ -180,16 +166,16 @@
                 <div class="card-title">🏆 Puan Durumu</div>
                 <a href="/Standings" class="section-link">Tümü →</a>
             </div>
-            @foreach (var s in Model.TopStandings)
+            @foreach (var s in Model.UstSiraPuanDurumu)
             {
                 <div class="mini-standing-row">
-                    <div class="mini-rank @(s.Rank <= 4 ? "rank-cl" : s.Rank >= 18 ? "rank-rel" : "")">@s.Rank</div>
-                    @if (!string.IsNullOrEmpty(s.TeamLogo))
+                    <div class="mini-rank @(s.Sira <= 4 ? "rank-cl" : s.Sira >= 18 ? "rank-rel" : "")">@s.Sira</div>
+                    @if (!string.IsNullOrEmpty(s.TakimLogo))
                     {
-                        <img class="mini-team-logo" src="@s.TeamLogo" alt="@s.TeamName" onerror="this.style.display='none'" />
+                        <img class="mini-team-logo" src="@s.TakimLogo" alt="@s.TakimAdi" onerror="this.style.display='none'" />
                     }
-                    <div class="mini-team-name">@s.TeamName</div>
-                    <div class="mini-pts">@s.Points</div>
+                    <div class="mini-team-name">@s.TakimAdi</div>
+                    <div class="mini-pts">@s.Puan</div>
                 </div>
             }
             <a href="/Standings" class="section-link" style="display:block;text-align:center;margin-top:16px;">Tam Tabloyu Gör →</a>
@@ -201,19 +187,19 @@
                 <div class="card-title">⚡ Gol Krallığı</div>
                 <a href="/Players" class="section-link">Tümü →</a>
             </div>
-            @foreach (var p in Model.TopScorers)
+            @foreach (var p in Model.GolKralligi)
             {
                 <div class="top-scorer-row">
-                    @if (!string.IsNullOrEmpty(p.Photo))
+                    @if (!string.IsNullOrEmpty(p.Foto))
                     {
-                        <img class="top-scorer-photo" src="@p.Photo" alt="@p.Name" onerror="this.style.display='none'" />
+                        <img class="top-scorer-photo" src="@p.Foto" alt="@p.Ad" onerror="this.style.display='none'" />
                     }
                     <div class="top-scorer-info">
-                        <div class="top-scorer-name">@p.Name</div>
-                        <div class="top-scorer-team">@p.TeamName</div>
+                        <div class="top-scorer-name">@p.Ad</div>
+                        <div class="top-scorer-team">@p.TakimAdi</div>
                     </div>
                     <div style="text-align:center">
-                        <div class="top-scorer-goals">@(p.Stats?.Goals ?? 0)</div>
+                        <div class="top-scorer-goals">@(p.Istatistikler?.Goller ?? 0)</div>
                         <div class="top-scorer-goal-lbl">GOL</div>
                     </div>
                 </div>

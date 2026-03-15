@@ -1,73 +1,134 @@
-@model List<Sportify.Models.Team>
+@model Sportify.Models.TeamsViewModel
 @{
     ViewData["Title"] = "Takımlar";
 }
 
 <div class="section-title">🛡️ Takımlar</div>
-<div class="section-subtitle">Premier League 2024/25 • Takım istatistikleri</div>
+@Html.AntiForgeryToken()
 
-@if (!Model.Any())
+@foreach (var league in Model.LeaguedTeams)
 {
-    <div class="card">
-        <div class="empty-state">
-            <div class="empty-icon">🛡️</div>
-            <p>Takım verisi bulunamadı</p>
-        </div>
-    </div>
-}
-else
-{
-    <div class="teams-grid">
-        @foreach (var t in Model)
-        {
-            var s = t.Stats;
-            <a href="/Teams/Detail/@t.Id" class="team-card fade-in">
-                <div class="team-card-header">
-                    <img class="team-card-logo" src="@t.Logo" alt="@t.Name" onerror="this.style.display='none'" />
-                    <div>
-                        <div class="team-card-name">@t.Name</div>
-                        <div class="team-card-country">@t.Country @(t.Founded > 0 ? $"• {t.Founded}" : "")</div>
-                        @if (!string.IsNullOrEmpty(t.Stadium))
-                        {
-                            <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">🏟️ @t.Stadium</div>
-                        }
-                    </div>
-                </div>
-                @if (s != null)
+    if (league.Value.Any())
+    {
+        <div class="league-container" style="margin-bottom: 48px;">
+            <div class="league-header" style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+                <h2 style="font-size: 20px; font-weight: 800; color: var(--text-primary);">@league.Key</h2>
+                <div class="badge" style="background: rgba(0, 212, 255, 0.1); color: var(--accent); padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 700;">@league.Value.Count Takım</div>
+            </div>
+
+            <div class="teams-grid">
+                @foreach (var t in league.Value)
                 {
-                    <div style="margin-bottom:12px;">
-                        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-secondary);margin-bottom:4px;">
-                            <span>Galibiyet Oranı</span>
-                            <span style="font-weight:700;color:var(--win-green)">%@s.WinRate</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width:@s.WinRate%;background:linear-gradient(90deg,var(--win-green),var(--accent3))"></div>
-                        </div>
-                    </div>
-                    <div class="team-stats-row">
-                        <div class="team-stat">
-                            <div class="team-stat-val" style="color:var(--win-green)">@s.Won</div>
-                            <div class="team-stat-lbl">Galibiyet</div>
-                        </div>
-                        <div class="team-stat">
-                            <div class="team-stat-val" style="color:var(--draw-yellow)">@s.Drawn</div>
-                            <div class="team-stat-lbl">Beraberlik</div>
-                        </div>
-                        <div class="team-stat">
-                            <div class="team-stat-val" style="color:var(--loss-red)">@s.Lost</div>
-                            <div class="team-stat-lbl">Mağlubiyet</div>
-                        </div>
-                        <div class="team-stat">
-                            <div class="team-stat-val" style="color:var(--accent)">@s.Points</div>
-                            <div class="team-stat-lbl">Puan</div>
-                        </div>
-                        <div class="team-stat">
-                            <div class="team-stat-val">@s.GoalsFor</div>
-                            <div class="team-stat-lbl">Gol</div>
-                        </div>
+                    var s = t.Istatistikler;
+                    var isFavorite = Model.FavoriteTeamIds.Contains(t.Id);
+                    <div style="position:relative;">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <button class="favorite-btn @(isFavorite ? "active" : "")" 
+                                    onclick="toggleFavorite(event, @t.Id)" 
+                                    title="@(isFavorite ? "Favorilerden Çıkar" : "Favorilere Ekle")">
+                                <span class="star-icon">@(isFavorite ? "⭐" : "☆")</span>
+                            </button>
+                        }
+                        <a href="/Teams/Detail/@t.Id" class="team-card fade-in">
+                            <div class="team-card-header">
+                                <img class="team-card-logo" src="@t.Logo" alt="@t.Ad" onerror="this.style.display='none'" />
+                                <div>
+                                    <div class="team-card-name">@t.Ad</div>
+                                    <div class="team-card-country">@t.Ulke @(t.KurulusYili > 0 ? $"• {t.KurulusYili}" : "")</div>
+                                    @if (!string.IsNullOrEmpty(t.Stadyum))
+                                    {
+                                        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">🏟️ @t.Stadyum</div>
+                                    }
+                                </div>
+                            </div>
+                            @if (s != null)
+                            {
+                                <div style="margin-bottom:12px;">
+                                    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-secondary);margin-bottom:4px;">
+                                        <span>Galibiyet Oranı</span>
+                                        <span style="font-weight:700;color:var(--win-green)">%@s.GalibiyetOrani</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width:@s.GalibiyetOrani%;background:linear-gradient(90deg,var(--win-green),var(--accent3))"></div>
+                                    </div>
+                                </div>
+                                <div class="team-stats-row">
+                                    <div class="team-stat">
+                                        <div class="team-stat-val" style="color:var(--win-green)">@s.Galibiyet</div>
+                                        <div class="team-stat-lbl">Galibiyet</div>
+                                    </div>
+                                    <div class="team-stat">
+                                        <div class="team-stat-val" style="color:var(--draw-yellow)">@s.Beraberlik</div>
+                                        <div class="team-stat-lbl">Beraberlik</div>
+                                    </div>
+                                    <div class="team-stat">
+                                        <div class="team-stat-val" style="color:var(--loss-red)">@s.Maglubiyet</div>
+                                        <div class="team-stat-lbl">Mağlubiyet</div>
+                                    </div>
+                                    <div class="team-stat">
+                                        <div class="team-stat-val" style="color:var(--accent)">@s.Puan</div>
+                                        <div class="team-stat-lbl">Puan</div>
+                                    </div>
+                                    <div class="team-stat">
+                                        <div class="team-stat-val">@s.AtilanGol</div>
+                                        <div class="team-stat-lbl">Gol</div>
+                                    </div>
+                                </div>
+                            }
+                        </a>
                     </div>
                 }
-            </a>
+            </div>
+        </div>
+    }
+}
+
+@section Scripts {
+<script>
+    async function toggleFavorite(event, takimId) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        const btn = event.currentTarget;
+        const icon = btn.querySelector('.star-icon');
+        const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+        
+        try {
+            const response = await fetch('/Account/ToggleFavorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'RequestVerificationToken': token
+                },
+                body: `takimId=${takimId}`
+            });
+            
+            if (!response.ok) {
+                const text = await response.text();
+                console.error('Server error:', text);
+                throw new Error(`Sunucu hatası: ${response.status}`);
+            }
+
+            const result = await response.json();
+            
+            if (result.success) {
+                if (result.isAdded) {
+                    btn.classList.add('active');
+                    icon.textContent = '⭐';
+                    btn.title = "Favorilerden Çıkar";
+                } else {
+                    btn.classList.remove('active');
+                    icon.textContent = '☆';
+                    btn.title = "Favorilere Ekle";
+                }
+            } else {
+                alert(result.message || "Bir hata oluştu.");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert("Favori işlemi gerçekleştirilemedi: " + error.message);
         }
-    </div>
+    }
+</script>
 }

@@ -5,13 +5,13 @@ namespace Sportify.Services
 {
     public interface ISportDataService
     {
-        Task<List<Standing>> GetStandingsAsync(int leagueId, int season);
-        Task<List<Player>> GetTopScorersAsync(int leagueId, int season);
-        Task<List<Match>> GetLiveMatchesAsync();
-        Task<List<Match>> GetTodayMatchesAsync();
-        Task<List<Team>> GetTeamsAsync(int leagueId, int season);
-        Task<Team?> GetTeamDetailsAsync(int teamId, int leagueId, int season);
-        Task<Player?> GetPlayerDetailsAsync(int playerId, int season);
+        Task<List<PuanDurumu>> GetStandingsAsync(int leagueId, int season);
+        Task<List<Oyuncu>> GetTopScorersAsync(int leagueId, int season);
+        Task<List<Mac>> GetLiveMatchesAsync();
+        Task<List<Mac>> GetTodayMatchesAsync();
+        Task<List<Takim>> GetTeamsAsync(int leagueId, int season);
+        Task<Takim?> GetTeamDetailsAsync(int teamId, int leagueId, int season);
+        Task<Oyuncu?> GetPlayerDetailsAsync(int playerId, int season);
         Task<DashboardViewModel> GetDashboardAsync();
     }
 
@@ -55,14 +55,14 @@ namespace Sportify.Services
             }
         }
 
-        public async Task<List<Standing>> GetStandingsAsync(int leagueId = 39, int season = 2024)
+        public async Task<List<PuanDurumu>> GetStandingsAsync(int leagueId = 39, int season = 2024)
         {
             if (!HasApiKey) return GetMockStandings();
 
             var doc = await GetAsync($"standings?league={leagueId}&season={season}");
             if (doc == null) return GetMockStandings();
 
-            var standings = new List<Standing>();
+            var standings = new List<PuanDurumu>();
             try
             {
                 var rows = doc.RootElement
@@ -74,22 +74,22 @@ namespace Sportify.Services
                 {
                     var team = item.GetProperty("team");
                     var all = item.GetProperty("all");
-                    standings.Add(new Standing
+                    standings.Add(new PuanDurumu
                     {
-                        Rank = item.GetProperty("rank").GetInt32(),
-                        TeamId = team.GetProperty("id").GetInt32(),
-                        TeamName = team.GetProperty("name").GetString() ?? "",
-                        TeamLogo = team.GetProperty("logo").GetString() ?? "",
-                        Played = all.GetProperty("played").GetInt32(),
-                        Won = all.GetProperty("win").GetInt32(),
-                        Drawn = all.GetProperty("draw").GetInt32(),
-                        Lost = all.GetProperty("lose").GetInt32(),
-                        GoalsFor = all.GetProperty("goals").GetProperty("for").GetInt32(),
-                        GoalsAgainst = all.GetProperty("goals").GetProperty("against").GetInt32(),
-                        GoalDiff = item.GetProperty("goalsDiff").GetInt32(),
-                        Points = item.GetProperty("points").GetInt32(),
+                        Sira = item.GetProperty("rank").GetInt32(),
+                        TakimId = team.GetProperty("id").GetInt32(),
+                        TakimAdi = team.GetProperty("name").GetString() ?? "",
+                        TakimLogo = team.GetProperty("logo").GetString() ?? "",
+                        Oynanan = all.GetProperty("played").GetInt32(),
+                        Galibiyet = all.GetProperty("win").GetInt32(),
+                        Beraberlik = all.GetProperty("draw").GetInt32(),
+                        Maglubiyet = all.GetProperty("lose").GetInt32(),
+                        AtilanGol = all.GetProperty("goals").GetProperty("for").GetInt32(),
+                        YenilenGol = all.GetProperty("goals").GetProperty("against").GetInt32(),
+                        GolFarki = item.GetProperty("goalsDiff").GetInt32(),
+                        Puan = item.GetProperty("points").GetInt32(),
                         Form = item.TryGetProperty("form", out var f) ? f.GetString() ?? "" : "",
-                        Description = item.TryGetProperty("description", out var d) ? d.GetString() ?? "" : ""
+                        Aciklama = item.TryGetProperty("description", out var d) ? d.GetString() ?? "" : ""
                     });
                 }
             }
@@ -101,14 +101,14 @@ namespace Sportify.Services
             return standings;
         }
 
-        public async Task<List<Player>> GetTopScorersAsync(int leagueId = 39, int season = 2024)
+        public async Task<List<Oyuncu>> GetTopScorersAsync(int leagueId = 39, int season = 2024)
         {
             if (!HasApiKey) return GetMockTopScorers();
 
             var doc = await GetAsync($"players/topscorers?league={leagueId}&season={season}");
             if (doc == null) return GetMockTopScorers();
 
-            var players = new List<Player>();
+            var players = new List<Oyuncu>();
             try
             {
                 foreach (var item in doc.RootElement.GetProperty("response").EnumerateArray())
@@ -119,22 +119,22 @@ namespace Sportify.Services
                     var gamesEl = stats.GetProperty("games");
                     var goalsEl = stats.GetProperty("goals");
 
-                    players.Add(new Player
+                    players.Add(new Oyuncu
                     {
                         Id = p.GetProperty("id").GetInt32(),
-                        Name = p.GetProperty("name").GetString() ?? "",
-                        Photo = p.GetProperty("photo").GetString() ?? "",
-                        Nationality = p.GetProperty("nationality").GetString() ?? "",
-                        Age = p.GetProperty("age").GetInt32(),
-                        Position = gamesEl.TryGetProperty("position", out var pos) ? pos.GetString() ?? "" : "",
-                        TeamName = teamEl.GetProperty("name").GetString() ?? "",
-                        TeamLogo = teamEl.GetProperty("logo").GetString() ?? "",
-                        Stats = new PlayerStats
+                        Ad = p.GetProperty("name").GetString() ?? "",
+                        Foto = p.GetProperty("photo").GetString() ?? "",
+                        Uyruk = p.GetProperty("nationality").GetString() ?? "",
+                        Yas = p.GetProperty("age").GetInt32(),
+                        Mevki = gamesEl.TryGetProperty("position", out var pos) ? pos.GetString() ?? "" : "",
+                        TakimAdi = teamEl.GetProperty("name").GetString() ?? "",
+                        TakimLogo = teamEl.GetProperty("logo").GetString() ?? "",
+                        Istatistikler = new OyuncuIstatistikleri
                         {
-                            Appearances = gamesEl.GetProperty("appearences").GetInt32(),
-                            Goals = goalsEl.GetProperty("total").GetInt32(),
-                            Assists = goalsEl.TryGetProperty("assists", out var a) && a.ValueKind != JsonValueKind.Null ? a.GetInt32() : 0,
-                            Rating = gamesEl.TryGetProperty("rating", out var r) && r.ValueKind != JsonValueKind.Null
+                            MacSayisi = gamesEl.GetProperty("appearences").GetInt32(),
+                            Goller = goalsEl.GetProperty("total").GetInt32(),
+                            Asistler = goalsEl.TryGetProperty("assists", out var a) && a.ValueKind != JsonValueKind.Null ? a.GetInt32() : 0,
+                            Reyting = gamesEl.TryGetProperty("rating", out var r) && r.ValueKind != JsonValueKind.Null
                                 ? double.TryParse(r.GetString(), out var rv) ? rv : 0 : 0
                         }
                     });
@@ -148,7 +148,7 @@ namespace Sportify.Services
             return players;
         }
 
-        public async Task<List<Match>> GetLiveMatchesAsync()
+        public async Task<List<Mac>> GetLiveMatchesAsync()
         {
             if (!HasApiKey) return GetMockLiveMatches();
 
@@ -158,7 +158,7 @@ namespace Sportify.Services
             return ParseMatches(doc, isLive: true);
         }
 
-        public async Task<List<Match>> GetTodayMatchesAsync()
+        public async Task<List<Mac>> GetTodayMatchesAsync()
         {
             if (!HasApiKey) return GetMockTodayMatches();
 
@@ -169,28 +169,28 @@ namespace Sportify.Services
             return ParseMatches(doc);
         }
 
-        public async Task<List<Team>> GetTeamsAsync(int leagueId = 39, int season = 2024)
+        public async Task<List<Takim>> GetTeamsAsync(int leagueId = 39, int season = 2024)
         {
             if (!HasApiKey) return GetMockTeams();
 
             var doc = await GetAsync($"teams?league={leagueId}&season={season}");
             if (doc == null) return GetMockTeams();
 
-            var teams = new List<Team>();
+            var teams = new List<Takim>();
             try
             {
                 foreach (var item in doc.RootElement.GetProperty("response").EnumerateArray())
                 {
                     var t = item.GetProperty("team");
                     var v = item.GetProperty("venue");
-                    teams.Add(new Team
+                    teams.Add(new Takim
                     {
                         Id = t.GetProperty("id").GetInt32(),
-                        Name = t.GetProperty("name").GetString() ?? "",
+                        Ad = t.GetProperty("name").GetString() ?? "",
                         Logo = t.GetProperty("logo").GetString() ?? "",
-                        Country = t.GetProperty("country").GetString() ?? "",
-                        Founded = t.TryGetProperty("founded", out var f) && f.ValueKind != JsonValueKind.Null ? f.GetInt32() : 0,
-                        Stadium = v.TryGetProperty("name", out var vn) && vn.ValueKind != JsonValueKind.Null ? vn.GetString() ?? "" : ""
+                        Ulke = t.GetProperty("country").GetString() ?? "",
+                        KurulusYili = t.TryGetProperty("founded", out var f) && f.ValueKind != JsonValueKind.Null ? f.GetInt32() : 0,
+                        Stadyum = v.TryGetProperty("name", out var vn) && vn.ValueKind != JsonValueKind.Null ? vn.GetString() ?? "" : ""
                     });
                 }
             }
@@ -198,7 +198,7 @@ namespace Sportify.Services
             return teams;
         }
 
-        public async Task<Team?> GetTeamDetailsAsync(int teamId, int leagueId = 39, int season = 2024)
+        public async Task<Takim?> GetTeamDetailsAsync(int teamId, int leagueId = 39, int season = 2024)
         {
             if (!HasApiKey) return GetMockTeams().FirstOrDefault(t => t.Id == teamId);
 
@@ -211,26 +211,26 @@ namespace Sportify.Services
                 var teamEl = res.GetProperty("team");
                 var fix = res.GetProperty("fixtures");
 
-                return new Team
+                return new Takim
                 {
                     Id = teamEl.GetProperty("id").GetInt32(),
-                    Name = teamEl.GetProperty("name").GetString() ?? "",
+                    Ad = teamEl.GetProperty("name").GetString() ?? "",
                     Logo = teamEl.GetProperty("logo").GetString() ?? "",
-                    Stats = new TeamStats
+                    Istatistikler = new TakimIstatistikleri
                     {
-                        Played = fix.GetProperty("played").GetProperty("total").GetInt32(),
-                        Won = fix.GetProperty("wins").GetProperty("total").GetInt32(),
-                        Drawn = fix.GetProperty("draws").GetProperty("total").GetInt32(),
-                        Lost = fix.GetProperty("loses").GetProperty("total").GetInt32(),
-                        GoalsFor = res.GetProperty("goals").GetProperty("for").GetProperty("total").GetProperty("total").GetInt32(),
-                        GoalsAgainst = res.GetProperty("goals").GetProperty("against").GetProperty("total").GetProperty("total").GetInt32()
+                        Oynanan = fix.GetProperty("played").GetProperty("total").GetInt32(),
+                        Galibiyet = fix.GetProperty("wins").GetProperty("total").GetInt32(),
+                        Beraberlik = fix.GetProperty("draws").GetProperty("total").GetInt32(),
+                        Maglubiyet = fix.GetProperty("loses").GetProperty("total").GetInt32(),
+                        AtilanGol = res.GetProperty("goals").GetProperty("for").GetProperty("total").GetProperty("total").GetInt32(),
+                        YenilenGol = res.GetProperty("goals").GetProperty("against").GetProperty("total").GetProperty("total").GetInt32()
                     }
                 };
             }
             catch { return null; }
         }
 
-        public async Task<Player?> GetPlayerDetailsAsync(int playerId, int season = 2024)
+        public async Task<Oyuncu?> GetPlayerDetailsAsync(int playerId, int season = 2024)
         {
             if (!HasApiKey) return GetMockTopScorers().FirstOrDefault(p => p.Id == playerId);
 
@@ -248,30 +248,30 @@ namespace Sportify.Services
                 var shotsEl = stats.GetProperty("shots");
                 var cardsEl = stats.GetProperty("cards");
 
-                return new Player
+                return new Oyuncu
                 {
                     Id = p.GetProperty("id").GetInt32(),
-                    Name = p.GetProperty("name").GetString() ?? "",
-                    Photo = p.GetProperty("photo").GetString() ?? "",
-                    Nationality = p.GetProperty("nationality").GetString() ?? "",
-                    Age = p.GetProperty("age").GetInt32(),
-                    Position = gamesEl.TryGetProperty("position", out var pos) ? pos.GetString() ?? "" : "",
-                    TeamName = stats.GetProperty("team").GetProperty("name").GetString() ?? "",
-                    TeamLogo = stats.GetProperty("team").GetProperty("logo").GetString() ?? "",
-                    Stats = new PlayerStats
+                    Ad = p.GetProperty("name").GetString() ?? "",
+                    Foto = p.GetProperty("photo").GetString() ?? "",
+                    Uyruk = p.GetProperty("nationality").GetString() ?? "",
+                    Yas = p.GetProperty("age").GetInt32(),
+                    Mevki = gamesEl.TryGetProperty("position", out var pos) ? pos.GetString() ?? "" : "",
+                    TakimAdi = stats.GetProperty("team").GetProperty("name").GetString() ?? "",
+                    TakimLogo = stats.GetProperty("team").GetProperty("logo").GetString() ?? "",
+                    Istatistikler = new OyuncuIstatistikleri
                     {
-                        Appearances = gamesEl.GetProperty("appearences").GetInt32(),
-                        Goals = goalsEl.GetProperty("total").GetInt32(),
-                        Assists = goalsEl.TryGetProperty("assists", out var a) && a.ValueKind != JsonValueKind.Null ? a.GetInt32() : 0,
-                        YellowCards = cardsEl.GetProperty("yellow").GetInt32(),
-                        RedCards = cardsEl.GetProperty("red").GetInt32(),
-                        Rating = gamesEl.TryGetProperty("rating", out var r) && r.ValueKind != JsonValueKind.Null
+                        MacSayisi = gamesEl.GetProperty("appearences").GetInt32(),
+                        Goller = goalsEl.GetProperty("total").GetInt32(),
+                        Asistler = goalsEl.TryGetProperty("assists", out var a) && a.ValueKind != JsonValueKind.Null ? a.GetInt32() : 0,
+                        SariKartlar = cardsEl.GetProperty("yellow").GetInt32(),
+                        KirmiziKartlar = cardsEl.GetProperty("red").GetInt32(),
+                        Reyting = gamesEl.TryGetProperty("rating", out var r) && r.ValueKind != JsonValueKind.Null
                             ? double.TryParse(r.GetString(), out var rv) ? rv : 0 : 0,
-                        MinutesPlayed = gamesEl.TryGetProperty("minutes", out var m) && m.ValueKind != JsonValueKind.Null ? m.GetInt32() : 0,
-                        Shots = shotsEl.TryGetProperty("total", out var st) && st.ValueKind != JsonValueKind.Null ? st.GetInt32() : 0,
-                        ShotsOnTarget = shotsEl.TryGetProperty("on", out var so) && so.ValueKind != JsonValueKind.Null ? so.GetInt32() : 0,
-                        Passes = passEl.TryGetProperty("total", out var pt) && pt.ValueKind != JsonValueKind.Null ? pt.GetInt32() : 0,
-                        PassAccuracy = passEl.TryGetProperty("accuracy", out var pa) && pa.ValueKind != JsonValueKind.Null ? pa.GetInt32() : 0
+                        OynananDakika = gamesEl.TryGetProperty("minutes", out var m) && m.ValueKind != JsonValueKind.Null ? m.GetInt32() : 0,
+                        Sutlar = shotsEl.TryGetProperty("total", out var st) && st.ValueKind != JsonValueKind.Null ? st.GetInt32() : 0,
+                        IsabetliSutlar = shotsEl.TryGetProperty("on", out var so) && so.ValueKind != JsonValueKind.Null ? so.GetInt32() : 0,
+                        Paslar = passEl.TryGetProperty("total", out var pt) && pt.ValueKind != JsonValueKind.Null ? pt.GetInt32() : 0,
+                        PasIsabeti = passEl.TryGetProperty("accuracy", out var pa) && pa.ValueKind != JsonValueKind.Null ? pa.GetInt32() : 0
                     }
                 };
             }
@@ -287,18 +287,18 @@ namespace Sportify.Services
 
             return new DashboardViewModel
             {
-                LiveMatches = liveMatches,
-                TodayMatches = todayMatches.Take(10).ToList(),
-                TopStandings = standings.Take(5).ToList(),
-                TopScorers = topScorers.Take(5).ToList(),
-                LeagueName = "Premier League",
-                LastUpdated = DateTime.Now
+                CanliMaclar = liveMatches,
+                BugunMaclar = todayMatches.Take(10).ToList(),
+                UstSiraPuanDurumu = standings.Take(5).ToList(),
+                GolKralligi = topScorers.Take(5).ToList(),
+                LigAdi = "Premier League",
+                SonGuncelleme = DateTime.Now
             };
         }
 
-        private List<Match> ParseMatches(JsonDocument doc, bool isLive = false)
+        private List<Mac> ParseMatches(JsonDocument doc, bool isLive = false)
         {
-            var matches = new List<Match>();
+            var matches = new List<Mac>();
             try
             {
                 foreach (var item in doc.RootElement.GetProperty("response").EnumerateArray())
@@ -309,20 +309,20 @@ namespace Sportify.Services
                     var goalsEl = item.GetProperty("goals");
                     var statusEl = fixture.GetProperty("status");
 
-                    matches.Add(new Match
+                    matches.Add(new Mac
                     {
                         Id = fixture.GetProperty("id").GetInt32(),
-                        HomeTeam = teamsEl.GetProperty("home").GetProperty("name").GetString() ?? "",
-                        AwayTeam = teamsEl.GetProperty("away").GetProperty("name").GetString() ?? "",
-                        HomeTeamLogo = teamsEl.GetProperty("home").GetProperty("logo").GetString() ?? "",
-                        AwayTeamLogo = teamsEl.GetProperty("away").GetProperty("logo").GetString() ?? "",
-                        HomeScore = goalsEl.GetProperty("home").ValueKind != JsonValueKind.Null ? goalsEl.GetProperty("home").GetInt32() : null,
-                        AwayScore = goalsEl.GetProperty("away").ValueKind != JsonValueKind.Null ? goalsEl.GetProperty("away").GetInt32() : null,
-                        Status = statusEl.GetProperty("short").GetString() ?? "",
-                        Minute = statusEl.TryGetProperty("elapsed", out var el) && el.ValueKind != JsonValueKind.Null ? el.GetInt32() : null,
-                        LeagueName = leagueEl.GetProperty("name").GetString() ?? "",
-                        LeagueLogo = leagueEl.GetProperty("logo").GetString() ?? "",
-                        Date = DateTime.TryParse(fixture.GetProperty("date").GetString(), out var dt) ? dt : DateTime.Now
+                        EvSahibi = teamsEl.GetProperty("home").GetProperty("name").GetString() ?? "",
+                        Deplasman = teamsEl.GetProperty("away").GetProperty("name").GetString() ?? "",
+                        EvSahibiLogo = teamsEl.GetProperty("home").GetProperty("logo").GetString() ?? "",
+                        DeplasmanLogo = teamsEl.GetProperty("away").GetProperty("logo").GetString() ?? "",
+                        EvSahibiSkor = goalsEl.GetProperty("home").ValueKind != JsonValueKind.Null ? goalsEl.GetProperty("home").GetInt32() : null,
+                        DeplasmanSkor = goalsEl.GetProperty("away").ValueKind != JsonValueKind.Null ? goalsEl.GetProperty("away").GetInt32() : null,
+                        Durum = statusEl.GetProperty("short").GetString() ?? "",
+                        Dakika = statusEl.TryGetProperty("elapsed", out var el) && el.ValueKind != JsonValueKind.Null ? el.GetInt32() : null,
+                        LigAdi = leagueEl.GetProperty("name").GetString() ?? "",
+                        LigLogo = leagueEl.GetProperty("logo").GetString() ?? "",
+                        Tarih = DateTime.TryParse(fixture.GetProperty("date").GetString(), out var dt) ? dt : DateTime.Now
                     });
                 }
             }
@@ -332,67 +332,67 @@ namespace Sportify.Services
 
         // ─── MOCK DATA (used when no API key is configured) ───────────────────
 
-        private List<Standing> GetMockStandings() => new()
+        private List<PuanDurumu> GetMockStandings() => new()
         {
-            new Standing { Rank=1, TeamId=33, TeamName="Manchester City", TeamLogo="https://media.api-sports.io/football/teams/50.png", Played=28, Won=21, Drawn=4, Lost=3, GoalsFor=62, GoalsAgainst=28, GoalDiff=34, Points=67, Form="WWWDW", Description="Champions League" },
-            new Standing { Rank=2, TeamId=40, TeamName="Liverpool", TeamLogo="https://media.api-sports.io/football/teams/40.png", Played=28, Won=20, Drawn=5, Lost=3, GoalsFor=70, GoalsAgainst=30, GoalDiff=40, Points=65, Form="WWWWW", Description="Champions League" },
-            new Standing { Rank=3, TeamId=42, TeamName="Arsenal", TeamLogo="https://media.api-sports.io/football/teams/42.png", Played=28, Won=18, Drawn=5, Lost=5, GoalsFor=65, GoalsAgainst=32, GoalDiff=33, Points=59, Form="WWDWW", Description="Champions League" },
-            new Standing { Rank=4, TeamId=66, TeamName="Aston Villa", TeamLogo="https://media.api-sports.io/football/teams/66.png", Played=28, Won=17, Drawn=4, Lost=7, GoalsFor=68, GoalsAgainst=52, GoalDiff=16, Points=55, Form="WDWWL", Description="Champions League" },
-            new Standing { Rank=5, TeamId=49, TeamName="Chelsea", TeamLogo="https://media.api-sports.io/football/teams/49.png", Played=28, Won=14, Drawn=5, Lost=9, GoalsFor=60, GoalsAgainst=46, GoalDiff=14, Points=47, Form="WLWWD", Description="Europa League" },
-            new Standing { Rank=6, TeamId=34, TeamName="Newcastle", TeamLogo="https://media.api-sports.io/football/teams/34.png", Played=28, Won=12, Drawn=7, Lost=9, GoalsFor=56, GoalsAgainst=42, GoalDiff=14, Points=43, Form="DWWLW", Description="Europa League" },
-            new Standing { Rank=7, TeamId=35, TeamName="Manchester United", TeamLogo="https://media.api-sports.io/football/teams/33.png", Played=28, Won=11, Drawn=4, Lost=13, GoalsFor=30, GoalsAgainst=44, GoalDiff=-14, Points=37, Form="LWLDL" },
-            new Standing { Rank=8, TeamId=47, TeamName="Tottenham", TeamLogo="https://media.api-sports.io/football/teams/47.png", Played=28, Won=10, Drawn=6, Lost=12, GoalsFor=55, GoalsAgainst=56, GoalDiff=-1, Points=36, Form="WLLWL" },
-            new Standing { Rank=9, TeamId=55, TeamName="West Ham", TeamLogo="https://media.api-sports.io/football/teams/55.png", Played=28, Won=10, Drawn=5, Lost=13, GoalsFor=44, GoalsAgainst=54, GoalDiff=-10, Points=35, Form="LWLWL" },
-            new Standing { Rank=10, TeamId=51, TeamName="Brighton", TeamLogo="https://media.api-sports.io/football/teams/51.png", Played=28, Won=9, Drawn=7, Lost=12, GoalsFor=50, GoalsAgainst=54, GoalDiff=-4, Points=34, Form="DWLLD" },
-            new Standing { Rank=11, TeamId=36, TeamName="Fulham", TeamLogo="https://media.api-sports.io/football/teams/36.png", Played=28, Won=9, Drawn=6, Lost=13, GoalsFor=44, GoalsAgainst=52, GoalDiff=-8, Points=33, Form="LLLWW" },
-            new Standing { Rank=12, TeamId=52, TeamName="Crystal Palace", TeamLogo="https://media.api-sports.io/football/teams/52.png", Played=28, Won=7, Drawn=9, Lost=12, GoalsFor=34, GoalsAgainst=49, GoalDiff=-15, Points=30, Form="DLDWL" },
-            new Standing { Rank=13, TeamId=45, TeamName="Everton", TeamLogo="https://media.api-sports.io/football/teams/45.png", Played=28, Won=7, Drawn=7, Lost=14, GoalsFor=32, GoalsAgainst=48, GoalDiff=-16, Points=28, Form="LDLLL" },
-            new Standing { Rank=14, TeamId=39, TeamName="Wolves", TeamLogo="https://media.api-sports.io/football/teams/39.png", Played=28, Won=6, Drawn=7, Lost=15, GoalsFor=36, GoalsAgainst=57, GoalDiff=-21, Points=25, Form="LLLWL" },
-            new Standing { Rank=15, TeamId=48, TeamName="Brentford", TeamLogo="https://media.api-sports.io/football/teams/48.png", Played=28, Won=6, Drawn=6, Lost=16, GoalsFor=40, GoalsAgainst=58, GoalDiff=-18, Points=24, Form="WLDLL" },
-            new Standing { Rank=16, TeamId=41, TeamName="Nottm Forest", TeamLogo="https://media.api-sports.io/football/teams/65.png", Played=28, Won=5, Drawn=7, Lost=16, GoalsFor=30, GoalsAgainst=56, GoalDiff=-26, Points=22, Form="LLDLL" },
-            new Standing { Rank=17, TeamId=46, TeamName="Bournemouth", TeamLogo="https://media.api-sports.io/football/teams/35.png", Played=28, Won=5, Drawn=6, Lost=17, GoalsFor=34, GoalsAgainst=62, GoalDiff=-28, Points=21, Form="LLLLL", Description="Relegation" },
-            new Standing { Rank=18, TeamId=57, TeamName="Sheffield United", TeamLogo="https://media.api-sports.io/football/teams/62.png", Played=28, Won=3, Drawn=6, Lost=19, GoalsFor=28, GoalsAgainst=82, GoalDiff=-54, Points=15, Form="LLLLL", Description="Relegation" },
-            new Standing { Rank=19, TeamId=44, TeamName="Burnley", TeamLogo="https://media.api-sports.io/football/teams/44.png", Played=28, Won=4, Drawn=3, Lost=21, GoalsFor=28, GoalsAgainst=66, GoalDiff=-38, Points=15, Form="LLLLL", Description="Relegation" },
-            new Standing { Rank=20, TeamId=63, TeamName="Luton", TeamLogo="https://media.api-sports.io/football/teams/1359.png", Played=28, Won=3, Drawn=5, Lost=20, GoalsFor=36, GoalsAgainst=70, GoalDiff=-34, Points=14, Form="LLLLL", Description="Relegation" }
+            new PuanDurumu { Sira=1, TakimId=33, TakimAdi="Manchester City", TakimLogo="https://media.api-sports.io/football/teams/50.png", Oynanan=28, Galibiyet=21, Beraberlik=4, Maglubiyet=3, AtilanGol=62, YenilenGol=28, GolFarki=34, Puan=67, Form="WWWDW", Aciklama="Champions League" },
+            new PuanDurumu { Sira=2, TakimId=40, TakimAdi="Liverpool", TakimLogo="https://media.api-sports.io/football/teams/40.png", Oynanan=28, Galibiyet=20, Beraberlik=5, Maglubiyet=3, AtilanGol=70, YenilenGol=30, GolFarki=40, Puan=65, Form="WWWWW", Aciklama="Champions League" },
+            new PuanDurumu { Sira=3, TakimId=42, TakimAdi="Arsenal", TakimLogo="https://media.api-sports.io/football/teams/42.png", Oynanan=28, Galibiyet=18, Beraberlik=5, Maglubiyet=5, AtilanGol=65, YenilenGol=32, GolFarki=33, Puan=59, Form="WWDWW", Aciklama="Champions League" },
+            new PuanDurumu { Sira=4, TakimId=66, TakimAdi="Aston Villa", TakimLogo="https://media.api-sports.io/football/teams/66.png", Oynanan=28, Galibiyet=17, Beraberlik=4, Maglubiyet=7, AtilanGol=68, YenilenGol=52, GolFarki=16, Puan=55, Form="WDWWL", Aciklama="Champions League" },
+            new PuanDurumu { Sira=5, TakimId=49, TakimAdi="Chelsea", TakimLogo="https://media.api-sports.io/football/teams/49.png", Oynanan=28, Galibiyet=14, Beraberlik=5, Maglubiyet=9, AtilanGol=60, YenilenGol=46, GolFarki=14, Puan=47, Form="WLWWD", Aciklama="Europa League" },
+            new PuanDurumu { Sira=6, TakimId=34, TakimAdi="Newcastle", TakimLogo="https://media.api-sports.io/football/teams/34.png", Oynanan=28, Galibiyet=12, Beraberlik=7, Maglubiyet=9, AtilanGol=56, YenilenGol=42, GolFarki=14, Puan=43, Form="DWWLW", Aciklama="Europa League" },
+            new PuanDurumu { Sira=7, TakimId=35, TakimAdi="Manchester United", TakimLogo="https://media.api-sports.io/football/teams/33.png", Oynanan=28, Galibiyet=11, Beraberlik=4, Maglubiyet=13, AtilanGol=30, YenilenGol=44, GolFarki=-14, Puan=37, Form="LWLDL" },
+            new PuanDurumu { Sira=8, TakimId=47, TakimAdi="Tottenham", TakimLogo="https://media.api-sports.io/football/teams/47.png", Oynanan=28, Galibiyet=10, Beraberlik=6, Maglubiyet=12, AtilanGol=55, YenilenGol=56, GolFarki=-1, Puan=36, Form="WLLWL" },
+            new PuanDurumu { Sira=9, TakimId=55, TakimAdi="West Ham", TakimLogo="https://media.api-sports.io/football/teams/55.png", Oynanan=28, Galibiyet=10, Beraberlik=5, Maglubiyet=13, AtilanGol=44, YenilenGol=54, GolFarki=-10, Puan=35, Form="LWLWL" },
+            new PuanDurumu { Sira=10, TakimId=51, TakimAdi="Brighton", TakimLogo="https://media.api-sports.io/football/teams/51.png", Oynanan=28, Galibiyet=9, Beraberlik=7, Maglubiyet=12, AtilanGol=50, YenilenGol=54, GolFarki=-4, Puan=34, Form="DWLLD" },
+            new PuanDurumu { Sira=11, TakimId=36, TakimAdi="Fulham", TakimLogo="https://media.api-sports.io/football/teams/36.png", Oynanan=28, Galibiyet=9, Beraberlik=6, Maglubiyet=13, AtilanGol=44, YenilenGol=52, GolFarki=-8, Puan=33, Form="LLLWW" },
+            new PuanDurumu { Sira=12, TakimId=52, TakimAdi="Crystal Palace", TakimLogo="https://media.api-sports.io/football/teams/52.png", Oynanan=28, Galibiyet=7, Beraberlik=9, Maglubiyet=12, AtilanGol=34, YenilenGol=49, GolFarki=-15, Puan=30, Form="DLDWL" },
+            new PuanDurumu { Sira=13, TakimId=45, TakimAdi="Everton", TakimLogo="https://media.api-sports.io/football/teams/45.png", Oynanan=28, Galibiyet=7, Beraberlik=7, Maglubiyet=14, AtilanGol=32, YenilenGol=48, GolFarki=-16, Puan=28, Form="LDLLL" },
+            new PuanDurumu { Sira=14, TakimId=39, TakimAdi="Wolves", TakimLogo="https://media.api-sports.io/football/teams/39.png", Oynanan=28, Galibiyet=6, Beraberlik=7, Maglubiyet=15, AtilanGol=36, YenilenGol=57, GolFarki=-21, Puan=25, Form="LLLWL" },
+            new PuanDurumu { Sira=15, TakimId=48, TakimAdi="Brentford", TakimLogo="https://media.api-sports.io/football/teams/48.png", Oynanan=28, Galibiyet=6, Beraberlik=6, Maglubiyet=16, AtilanGol=40, YenilenGol=58, GolFarki=-18, Puan=24, Form="WLDLL" },
+            new PuanDurumu { Sira=16, TakimId=41, TakimAdi="Nottm Forest", TakimLogo="https://media.api-sports.io/football/teams/65.png", Oynanan=28, Galibiyet=5, Beraberlik=7, Maglubiyet=16, AtilanGol=30, YenilenGol=56, GolFarki=-26, Puan=22, Form="LLDLL" },
+            new PuanDurumu { Sira=17, TakimId=46, TakimAdi="Bournemouth", TakimLogo="https://media.api-sports.io/football/teams/35.png", Oynanan=28, Galibiyet=5, Beraberlik=6, Maglubiyet=17, AtilanGol=34, YenilenGol=62, GolFarki=-28, Puan=21, Form="LLLLL", Aciklama="Relegation" },
+            new PuanDurumu { Sira=18, TakimId=57, TakimAdi="Sheffield United", TakimLogo="https://media.api-sports.io/football/teams/62.png", Oynanan=28, Galibiyet=3, Beraberlik=6, Maglubiyet=19, AtilanGol=28, YenilenGol=82, GolFarki=-54, Puan=15, Form="LLLLL", Aciklama="Relegation" },
+            new PuanDurumu { Sira=19, TakimId=44, TakimAdi="Burnley", TakimLogo="https://media.api-sports.io/football/teams/44.png", Oynanan=28, Galibiyet=4, Beraberlik=3, Maglubiyet=21, AtilanGol=28, YenilenGol=66, GolFarki=-38, Puan=15, Form="LLLLL", Aciklama="Relegation" },
+            new PuanDurumu { Sira=20, TakimId=63, TakimAdi="Luton", TakimLogo="https://media.api-sports.io/football/teams/1359.png", Oynanan=28, Galibiyet=3, Beraberlik=5, Maglubiyet=20, AtilanGol=36, YenilenGol=70, GolFarki=-34, Puan=14, Form="LLLLL", Aciklama="Relegation" }
         };
 
-        private List<Player> GetMockTopScorers() => new()
+        private List<Oyuncu> GetMockTopScorers() => new()
         {
-            new Player { Id=1, Name="Erling Haaland", Photo="https://media.api-sports.io/football/players/1100.png", Nationality="Norway", Age=23, Position="Attacker", TeamName="Manchester City", TeamLogo="https://media.api-sports.io/football/teams/50.png", Stats=new PlayerStats { Appearances=27, Goals=20, Assists=5, Rating=7.85, YellowCards=1, RedCards=0, MinutesPlayed=2260, Shots=95, ShotsOnTarget=55, Passes=520, PassAccuracy=74 } },
-            new Player { Id=2, Name="Cole Palmer", Photo="https://media.api-sports.io/football/players/284646.png", Nationality="England", Age=21, Position="Midfielder", TeamName="Chelsea", TeamLogo="https://media.api-sports.io/football/teams/49.png", Stats=new PlayerStats { Appearances=26, Goals=18, Assists=10, Rating=7.92, YellowCards=3, RedCards=0, MinutesPlayed=2200, Shots=80, ShotsOnTarget=48, Passes=900, PassAccuracy=82 } },
-            new Player { Id=3, Name="Alexander Isak", Photo="https://media.api-sports.io/football/players/169.png", Nationality="Sweden", Age=24, Position="Attacker", TeamName="Newcastle", TeamLogo="https://media.api-sports.io/football/teams/34.png", Stats=new PlayerStats { Appearances=25, Goals=17, Assists=3, Rating=7.60, YellowCards=2, RedCards=0, MinutesPlayed=2100, Shots=78, ShotsOnTarget=42, Passes=440, PassAccuracy=72 } },
-            new Player { Id=4, Name="Bukayo Saka", Photo="https://media.api-sports.io/football/players/184.png", Nationality="England", Age=22, Position="Attacker", TeamName="Arsenal", TeamLogo="https://media.api-sports.io/football/teams/42.png", Stats=new PlayerStats { Appearances=27, Goals=15, Assists=10, Rating=7.80, YellowCards=2, RedCards=0, MinutesPlayed=2380, Shots=70, ShotsOnTarget=40, Passes=1100, PassAccuracy=85 } },
-            new Player { Id=5, Name="Mohamed Salah", Photo="https://media.api-sports.io/football/players/306.png", Nationality="Egypt", Age=31, Position="Attacker", TeamName="Liverpool", TeamLogo="https://media.api-sports.io/football/teams/40.png", Stats=new PlayerStats { Appearances=27, Goals=17, Assists=12, Rating=8.10, YellowCards=0, RedCards=0, MinutesPlayed=2350, Shots=85, ShotsOnTarget=50, Passes=850, PassAccuracy=81 } },
-            new Player { Id=6, Name="Ollie Watkins", Photo="https://media.api-sports.io/football/players/181.png", Nationality="England", Age=28, Position="Attacker", TeamName="Aston Villa", TeamLogo="https://media.api-sports.io/football/teams/66.png", Stats=new PlayerStats { Appearances=28, Goals=16, Assists=11, Rating=7.75, YellowCards=3, RedCards=0, MinutesPlayed=2430, Shots=75, ShotsOnTarget=38, Passes=600, PassAccuracy=71 } },
-            new Player { Id=7, Name="Jarrod Bowen", Photo="https://media.api-sports.io/football/players/200.png", Nationality="England", Age=27, Position="Attacker", TeamName="West Ham", TeamLogo="https://media.api-sports.io/football/teams/55.png", Stats=new PlayerStats { Appearances=26, Goals=14, Assists=6, Rating=7.30, YellowCards=4, RedCards=0, MinutesPlayed=2200, Shots=65, ShotsOnTarget=35, Passes=700, PassAccuracy=76 } },
-            new Player { Id=8, Name="Son Heung-min", Photo="https://media.api-sports.io/football/players/521.png", Nationality="South Korea", Age=31, Position="Attacker", TeamName="Tottenham", TeamLogo="https://media.api-sports.io/football/teams/47.png", Stats=new PlayerStats { Appearances=27, Goals=13, Assists=7, Rating=7.20, YellowCards=1, RedCards=0, MinutesPlayed=2310, Shots=68, ShotsOnTarget=35, Passes=780, PassAccuracy=79 } },
-            new Player { Id=9, Name="Dominic Solanke", Photo="https://media.api-sports.io/football/players/18.png", Nationality="England", Age=26, Position="Attacker", TeamName="Bournemouth", TeamLogo="https://media.api-sports.io/football/teams/35.png", Stats=new PlayerStats { Appearances=28, Goals=13, Assists=4, Rating=7.00, YellowCards=3, RedCards=0, MinutesPlayed=2460, Shots=60, ShotsOnTarget=30, Passes=550, PassAccuracy=68 } },
-            new Player { Id=10, Name="Leandro Trossard", Photo="https://media.api-sports.io/football/players/747.png", Nationality="Belgium", Age=29, Position="Midfielder", TeamName="Arsenal", TeamLogo="https://media.api-sports.io/football/teams/42.png", Stats=new PlayerStats { Appearances=25, Goals=10, Assists=5, Rating=7.10, YellowCards=2, RedCards=0, MinutesPlayed=1900, Shots=55, ShotsOnTarget=28, Passes=870, PassAccuracy=84 } },
+            new Oyuncu { Id=1, Ad="Erling Haaland", Foto="https://media.api-sports.io/football/players/1100.png", Uyruk="Norway", Yas=23, Mevki="Attacker", TakimAdi="Manchester City", TakimLogo="https://media.api-sports.io/football/teams/50.png", Istatistikler=new OyuncuIstatistikleri { MacSayisi=27, Goller=20, Asistler=5, Reyting=7.85, SariKartlar=1, KirmiziKartlar=0, OynananDakika=2260, Sutlar=95, IsabetliSutlar=55, Paslar=520, PasIsabeti=74 } },
+            new Oyuncu { Id=2, Ad="Cole Palmer", Foto="https://media.api-sports.io/football/players/284646.png", Uyruk="England", Yas=21, Mevki="Midfielder", TakimAdi="Chelsea", TakimLogo="https://media.api-sports.io/football/teams/49.png", Istatistikler=new OyuncuIstatistikleri { MacSayisi=26, Goller=18, Asistler=10, Reyting=7.92, SariKartlar=3, KirmiziKartlar=0, OynananDakika=2200, Sutlar=80, IsabetliSutlar=48, Paslar=900, PasIsabeti=82 } },
+            new Oyuncu { Id=3, Ad="Alexander Isak", Foto="https://media.api-sports.io/football/players/169.png", Uyruk="Sweden", Yas=24, Mevki="Attacker", TakimAdi="Newcastle", TakimLogo="https://media.api-sports.io/football/teams/34.png", Istatistikler=new OyuncuIstatistikleri { MacSayisi=25, Goller=17, Asistler=3, Reyting=7.60, SariKartlar=2, KirmiziKartlar=0, OynananDakika=2100, Sutlar=78, IsabetliSutlar=42, Paslar=440, PasIsabeti=72 } },
+            new Oyuncu { Id=4, Ad="Bukayo Saka", Foto="https://media.api-sports.io/football/players/184.png", Uyruk="England", Yas=22, Mevki="Attacker", TakimAdi="Arsenal", TakimLogo="https://media.api-sports.io/football/teams/42.png", Istatistikler=new OyuncuIstatistikleri { MacSayisi=27, Goller=15, Asistler=10, Reyting=7.80, SariKartlar=2, KirmiziKartlar=0, OynananDakika=2380, Sutlar=70, IsabetliSutlar=40, Paslar=1100, PasIsabeti=85 } },
+            new Oyuncu { Id=5, Ad="Mohamed Salah", Foto="https://media.api-sports.io/football/players/306.png", Uyruk="Egypt", Yas=31, Mevki="Attacker", TakimAdi="Liverpool", TakimLogo="https://media.api-sports.io/football/teams/40.png", Istatistikler=new OyuncuIstatistikleri { MacSayisi=27, Goller=17, Asistler=12, Reyting=8.10, SariKartlar=0, KirmiziKartlar=0, OynananDakika=2350, Sutlar=85, IsabetliSutlar=50, Paslar=850, PasIsabeti=81 } },
+            new Oyuncu { Id=6, Ad="Ollie Watkins", Foto="https://media.api-sports.io/football/players/181.png", Uyruk="England", Yas=28, Mevki="Attacker", TakimAdi="Aston Villa", TakimLogo="https://media.api-sports.io/football/teams/66.png", Istatistikler=new OyuncuIstatistikleri { MacSayisi=28, Goller=16, Asistler=11, Reyting=7.75, SariKartlar=3, KirmiziKartlar=0, OynananDakika=2430, Sutlar=75, IsabetliSutlar=38, Paslar=600, PasIsabeti=71 } },
+            new Oyuncu { Id=7, Ad="Jarrod Bowen", Foto="https://media.api-sports.io/football/players/200.png", Uyruk="England", Yas=27, Mevki="Attacker", TakimAdi="West Ham", TakimLogo="https://media.api-sports.io/football/teams/55.png", Istatistikler=new OyuncuIstatistikleri { MacSayisi=26, Goller=14, Asistler=6, Reyting=7.30, SariKartlar=4, KirmiziKartlar=0, OynananDakika=2200, Sutlar=65, IsabetliSutlar=35, Paslar=700, PasIsabeti=76 } },
+            new Oyuncu { Id=8, Ad="Son Heung-min", Foto="https://media.api-sports.io/football/players/521.png", Uyruk="South Korea", Yas=31, Mevki="Attacker", TakimAdi="Tottenham", TakimLogo="https://media.api-sports.io/football/teams/47.png", Istatistikler=new OyuncuIstatistikleri { MacSayisi=27, Goller=13, Asistler=7, Reyting=7.20, SariKartlar=1, KirmiziKartlar=0, OynananDakika=2310, Sutlar=68, IsabetliSutlar=35, Paslar=780, PasIsabeti=79 } },
+            new Oyuncu { Id=9, Ad="Dominic Solanke", Foto="https://media.api-sports.io/football/players/18.png", Uyruk="England", Yas=26, Mevki="Attacker", TakimAdi="Bournemouth", TakimLogo="https://media.api-sports.io/football/teams/35.png", Istatistikler=new OyuncuIstatistikleri { MacSayisi=28, Goller=13, Asistler=4, Reyting=7.00, SariKartlar=3, KirmiziKartlar=0, OynananDakika=2460, Sutlar=60, IsabetliSutlar=30, Paslar=550, PasIsabeti=68 } },
+            new Oyuncu { Id=10, Ad="Leandro Trossard", Foto="https://media.api-sports.io/football/players/747.png", Uyruk="Belgium", Yas=29, Mevki="Midfielder", TakimAdi="Arsenal", TakimLogo="https://media.api-sports.io/football/teams/42.png", Istatistikler=new OyuncuIstatistikleri { MacSayisi=25, Goller=10, Asistler=5, Reyting=7.10, SariKartlar=2, KirmiziKartlar=0, OynananDakika=1900, Sutlar=55, IsabetliSutlar=28, Paslar=870, PasIsabeti=84 } },
         };
 
-        private List<Match> GetMockLiveMatches() => new()
+        private List<Mac> GetMockLiveMatches() => new()
         {
-            new Match { Id=1, HomeTeam="Liverpool", AwayTeam="Arsenal", HomeTeamLogo="https://media.api-sports.io/football/teams/40.png", AwayTeamLogo="https://media.api-sports.io/football/teams/42.png", HomeScore=2, AwayScore=1, Status="1H", Minute=38, LeagueName="Premier League", LeagueLogo="https://media.api-sports.io/football/leagues/39.png", Date=DateTime.Now },
-            new Match { Id=2, HomeTeam="Real Madrid", AwayTeam="Barcelona", HomeTeamLogo="https://media.api-sports.io/football/teams/541.png", AwayTeamLogo="https://media.api-sports.io/football/teams/529.png", HomeScore=1, AwayScore=1, Status="2H", Minute=67, LeagueName="La Liga", LeagueLogo="https://media.api-sports.io/football/leagues/140.png", Date=DateTime.Now },
+            new Mac { Id=1, EvSahibi="Liverpool", Deplasman="Arsenal", EvSahibiLogo="https://media.api-sports.io/football/teams/40.png", DeplasmanLogo="https://media.api-sports.io/football/teams/42.png", EvSahibiSkor=2, DeplasmanSkor=1, Durum="1H", Dakika=38, LigAdi="Premier League", LigLogo="https://media.api-sports.io/football/leagues/39.png", Tarih=DateTime.Now },
+            new Mac { Id=2, EvSahibi="Real Madrid", Deplasman="Barcelona", EvSahibiLogo="https://media.api-sports.io/football/teams/541.png", DeplasmanLogo="https://media.api-sports.io/football/teams/529.png", EvSahibiSkor=1, DeplasmanSkor=1, Durum="2H", Dakika=67, LigAdi="La Liga", LigLogo="https://media.api-sports.io/football/leagues/140.png", Tarih=DateTime.Now },
         };
 
-        private List<Match> GetMockTodayMatches() => new()
+        private List<Mac> GetMockTodayMatches() => new()
         {
-            new Match { Id=1, HomeTeam="Liverpool", AwayTeam="Arsenal", HomeTeamLogo="https://media.api-sports.io/football/teams/40.png", AwayTeamLogo="https://media.api-sports.io/football/teams/42.png", HomeScore=2, AwayScore=1, Status="1H", Minute=38, LeagueName="Premier League", LeagueLogo="https://media.api-sports.io/football/leagues/39.png", Date=DateTime.Now.AddHours(-1) },
-            new Match { Id=2, HomeTeam="Real Madrid", AwayTeam="Barcelona", HomeTeamLogo="https://media.api-sports.io/football/teams/541.png", AwayTeamLogo="https://media.api-sports.io/football/teams/529.png", HomeScore=1, AwayScore=1, Status="2H", Minute=67, LeagueName="La Liga", LeagueLogo="https://media.api-sports.io/football/leagues/140.png", Date=DateTime.Now.AddHours(-1) },
-            new Match { Id=3, HomeTeam="Bayern Munich", AwayTeam="Dortmund", HomeTeamLogo="https://media.api-sports.io/football/teams/157.png", AwayTeamLogo="https://media.api-sports.io/football/teams/165.png", HomeScore=null, AwayScore=null, Status="NS", LeagueName="Bundesliga", LeagueLogo="https://media.api-sports.io/football/leagues/78.png", Date=DateTime.Now.AddHours(2) },
-            new Match { Id=4, HomeTeam="PSG", AwayTeam="Lyon", HomeTeamLogo="https://media.api-sports.io/football/teams/85.png", AwayTeamLogo="https://media.api-sports.io/football/teams/80.png", HomeScore=null, AwayScore=null, Status="NS", LeagueName="Ligue 1", LeagueLogo="https://media.api-sports.io/football/leagues/61.png", Date=DateTime.Now.AddHours(3) },
-            new Match { Id=5, HomeTeam="Manchester City", AwayTeam="Chelsea", HomeTeamLogo="https://media.api-sports.io/football/teams/50.png", AwayTeamLogo="https://media.api-sports.io/football/teams/49.png", HomeScore=3, AwayScore=0, Status="FT", LeagueName="Premier League", LeagueLogo="https://media.api-sports.io/football/leagues/39.png", Date=DateTime.Now.AddHours(-3) },
+            new Mac { Id=1, EvSahibi="Liverpool", Deplasman="Arsenal", EvSahibiLogo="https://media.api-sports.io/football/teams/40.png", DeplasmanLogo="https://media.api-sports.io/football/teams/42.png", EvSahibiSkor=2, DeplasmanSkor=1, Durum="1H", Dakika=38, LigAdi="Premier League", LigLogo="https://media.api-sports.io/football/leagues/39.png", Tarih=DateTime.Now.AddHours(-1) },
+            new Mac { Id=2, EvSahibi="Real Madrid", Deplasman="Barcelona", EvSahibiLogo="https://media.api-sports.io/football/teams/541.png", DeplasmanLogo="https://media.api-sports.io/football/teams/529.png", EvSahibiSkor=1, DeplasmanSkor=1, Durum="2H", Dakika=67, LigAdi="La Liga", LigLogo="https://media.api-sports.io/football/leagues/140.png", Tarih=DateTime.Now.AddHours(-1) },
+            new Mac { Id=3, EvSahibi="Bayern Munich", Deplasman="Dortmund", EvSahibiLogo="https://media.api-sports.io/football/teams/157.png", DeplasmanLogo="https://media.api-sports.io/football/teams/165.png", EvSahibiSkor=null, DeplasmanSkor=null, Durum="NS", LigAdi="Bundesliga", LigLogo="https://media.api-sports.io/football/leagues/78.png", Tarih=DateTime.Now.AddHours(2) },
+            new Mac { Id=4, EvSahibi="PSG", Deplasman="Lyon", EvSahibiLogo="https://media.api-sports.io/football/teams/85.png", DeplasmanLogo="https://media.api-sports.io/football/teams/80.png", EvSahibiSkor=null, DeplasmanSkor=null, Durum="NS", LigAdi="Ligue 1", LigLogo="https://media.api-sports.io/football/leagues/61.png", Tarih=DateTime.Now.AddHours(3) },
+            new Mac { Id=5, EvSahibi="Manchester City", Deplasman="Chelsea", EvSahibiLogo="https://media.api-sports.io/football/teams/50.png", DeplasmanLogo="https://media.api-sports.io/football/teams/49.png", EvSahibiSkor=3, DeplasmanSkor=0, Durum="FT", LigAdi="Premier League", LigLogo="https://media.api-sports.io/football/leagues/39.png", Tarih=DateTime.Now.AddHours(-3) },
         };
 
-        private List<Team> GetMockTeams() => new()
+        private List<Takim> GetMockTeams() => new()
         {
-            new Team { Id=33, Name="Manchester City", Logo="https://media.api-sports.io/football/teams/50.png", Country="England", Founded=1880, Stadium="Etihad Stadium", Stats=new TeamStats { Played=28, Won=21, Drawn=4, Lost=3, GoalsFor=62, GoalsAgainst=28 } },
-            new Team { Id=40, Name="Liverpool", Logo="https://media.api-sports.io/football/teams/40.png", Country="England", Founded=1892, Stadium="Anfield", Stats=new TeamStats { Played=28, Won=20, Drawn=5, Lost=3, GoalsFor=70, GoalsAgainst=30 } },
-            new Team { Id=42, Name="Arsenal", Logo="https://media.api-sports.io/football/teams/42.png", Country="England", Founded=1886, Stadium="Emirates Stadium", Stats=new TeamStats { Played=28, Won=18, Drawn=5, Lost=5, GoalsFor=65, GoalsAgainst=32 } },
-            new Team { Id=66, Name="Aston Villa", Logo="https://media.api-sports.io/football/teams/66.png", Country="England", Founded=1874, Stadium="Villa Park", Stats=new TeamStats { Played=28, Won=17, Drawn=4, Lost=7, GoalsFor=68, GoalsAgainst=52 } },
-            new Team { Id=49, Name="Chelsea", Logo="https://media.api-sports.io/football/teams/49.png", Country="England", Founded=1905, Stadium="Stamford Bridge", Stats=new TeamStats { Played=28, Won=14, Drawn=5, Lost=9, GoalsFor=60, GoalsAgainst=46 } },
-            new Team { Id=34, Name="Newcastle", Logo="https://media.api-sports.io/football/teams/34.png", Country="England", Founded=1892, Stadium="St. James' Park", Stats=new TeamStats { Played=28, Won=12, Drawn=7, Lost=9, GoalsFor=56, GoalsAgainst=42 } },
+            new Takim { Id=33, Ad="Manchester City", Logo="https://media.api-sports.io/football/teams/50.png", Ulke="England", KurulusYili=1880, Stadyum="Etihad Stadium", Istatistikler=new TakimIstatistikleri { Oynanan=28, Galibiyet=21, Beraberlik=4, Maglubiyet=3, AtilanGol=62, YenilenGol=28 } },
+            new Takim { Id=40, Ad="Liverpool", Logo="https://media.api-sports.io/football/teams/40.png", Ulke="England", KurulusYili=1892, Stadyum="Anfield", Istatistikler=new TakimIstatistikleri { Oynanan=28, Galibiyet=20, Beraberlik=5, Maglubiyet=3, AtilanGol=70, YenilenGol=30 } },
+            new Takim { Id=42, Ad="Arsenal", Logo="https://media.api-sports.io/football/teams/42.png", Ulke="England", KurulusYili=1886, Stadyum="Emirates Stadium", Istatistikler=new TakimIstatistikleri { Oynanan=28, Galibiyet=18, Beraberlik=5, Maglubiyet=5, AtilanGol=65, YenilenGol=32 } },
+            new Takim { Id=66, Ad="Aston Villa", Logo="https://media.api-sports.io/football/teams/66.png", Ulke="England", KurulusYili=1874, Stadyum="Villa Park", Istatistikler=new TakimIstatistikleri { Oynanan=28, Galibiyet=17, Beraberlik=4, Maglubiyet=7, AtilanGol=68, YenilenGol=52 } },
+            new Takim { Id=49, Ad="Chelsea", Logo="https://media.api-sports.io/football/teams/49.png", Ulke="England", KurulusYili=1905, Stadyum="Stamford Bridge", Istatistikler=new TakimIstatistikleri { Oynanan=28, Galibiyet=14, Beraberlik=5, Maglubiyet=9, AtilanGol=60, YenilenGol=46 } },
+            new Takim { Id=34, Ad="Newcastle", Logo="https://media.api-sports.io/football/teams/34.png", Ulke="England", KurulusYili=1892, Stadyum="St. James' Park", Istatistikler=new TakimIstatistikleri { Oynanan=28, Galibiyet=12, Beraberlik=7, Maglubiyet=9, AtilanGol=56, YenilenGol=42 } },
         };
     }
 }

@@ -1,7 +1,7 @@
-@model Sportify.Models.Team
+@model Sportify.Models.Takim
 @{
-    ViewData["Title"] = Model.Name;
-    var s = Model.Stats;
+    ViewData["Title"] = Model.Ad;
+    var s = Model.Istatistikler;
 }
 
 <div style="margin-bottom:24px">
@@ -10,21 +10,21 @@
 
 <div class="card" style="margin-bottom:24px">
     <div style="display:flex;align-items:center;gap:28px;flex-wrap:wrap">
-        <img src="@Model.Logo" alt="@Model.Name" style="width:90px;height:90px;object-fit:contain;background:rgba(255,255,255,0.04);border-radius:16px;padding:8px" onerror="this.style.display='none'" />
+        <img src="@Model.Logo" alt="@Model.Ad" style="width:90px;height:90px;object-fit:contain;background:rgba(255,255,255,0.04);border-radius:16px;padding:8px" onerror="this.style.display='none'" />
         <div>
-            <h2 style="font-size:26px;font-weight:900;margin-bottom:8px">@Model.Name</h2>
+            <h2 style="font-size:26px;font-weight:900;margin-bottom:8px">@Model.Ad</h2>
             <div style="display:flex;flex-wrap:wrap;gap:14px;color:var(--text-secondary);font-size:14px">
-                @if (!string.IsNullOrEmpty(Model.Country))
+                @if (!string.IsNullOrEmpty(Model.Ulke))
                 {
-                    <span>🌍 @Model.Country</span>
+                    <span>🌍 @Model.Ulke</span>
                 }
-                @if (Model.Founded > 0)
+                @if (Model.KurulusYili > 0)
                 {
-                    <span>📅 Kuruluş: @Model.Founded</span>
+                    <span>📅 Kuruluş: @Model.KurulusYili</span>
                 }
-                @if (!string.IsNullOrEmpty(Model.Stadium))
+                @if (!string.IsNullOrEmpty(Model.Stadyum))
                 {
-                    <span>🏟️ @Model.Stadium</span>
+                    <span>🏟️ @Model.Stadyum</span>
                 }
             </div>
         </div>
@@ -36,37 +36,37 @@
     <div class="section-title" style="font-size:18px;margin-bottom:16px">📊 Sezon İstatistikleri</div>
     <div class="detail-grid">
         <div class="detail-stat fade-in">
-            <div class="detail-stat-val">@s.Played</div>
+            <div class="detail-stat-val">@s.Oynanan</div>
             <div class="detail-stat-lbl">Oynanan</div>
         </div>
         <div class="detail-stat fade-in">
-            <div class="detail-stat-val" style="color:var(--win-green)">@s.Won</div>
+            <div class="detail-stat-val" style="color:var(--win-green)">@s.Galibiyet</div>
             <div class="detail-stat-lbl">Galibiyet</div>
         </div>
         <div class="detail-stat fade-in">
-            <div class="detail-stat-val" style="color:var(--draw-yellow)">@s.Drawn</div>
+            <div class="detail-stat-val" style="color:var(--draw-yellow)">@s.Beraberlik</div>
             <div class="detail-stat-lbl">Beraberlik</div>
         </div>
         <div class="detail-stat fade-in">
-            <div class="detail-stat-val" style="color:var(--loss-red)">@s.Lost</div>
+            <div class="detail-stat-val" style="color:var(--loss-red)">@s.Maglubiyet</div>
             <div class="detail-stat-lbl">Mağlubiyet</div>
         </div>
         <div class="detail-stat fade-in">
-            <div class="detail-stat-val">@s.GoalsFor</div>
+            <div class="detail-stat-val">@s.AtilanGol</div>
             <div class="detail-stat-lbl">Atılan Gol</div>
         </div>
         <div class="detail-stat fade-in">
-            <div class="detail-stat-val">@s.GoalsAgainst</div>
+            <div class="detail-stat-val">@s.YenilenGol</div>
             <div class="detail-stat-lbl">Yenilen Gol</div>
         </div>
         <div class="detail-stat fade-in">
-            <div class="detail-stat-val" style="color:@(s.GoalDiff >= 0 ? "var(--win-green)" : "var(--loss-red)")">
-                @(s.GoalDiff >= 0 ? "+" : "")@s.GoalDiff
+            <div class="detail-stat-val" style="color:@(s.GolFarki >= 0 ? "var(--win-green)" : "var(--loss-red)")">
+                @(s.GolFarki >= 0 ? "+" : "")@s.GolFarki
             </div>
             <div class="detail-stat-lbl">Averaj</div>
         </div>
         <div class="detail-stat fade-in">
-            <div class="detail-stat-val" style="color:var(--accent)">@s.Points</div>
+            <div class="detail-stat-val" style="color:var(--accent)">@s.Puan</div>
             <div class="detail-stat-lbl">Puan</div>
         </div>
     </div>
@@ -76,28 +76,28 @@
         <div style="margin-bottom:14px">
             <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px">
                 <span>Galibiyet Oranı</span>
-                <span style="font-weight:700;color:var(--win-green)">%@s.WinRate</span>
+                <span style="font-weight:700;color:var(--win-green)">%@s.GalibiyetOrani</span>
             </div>
             <div class="progress-bar">
-                <div class="progress-fill" style="width:@s.WinRate%;background:linear-gradient(90deg,var(--win-green),var(--accent3))"></div>
+                <div class="progress-fill" style="width:@s.GalibiyetOrani%;background:linear-gradient(90deg,var(--win-green),var(--accent3))"></div>
             </div>
         </div>
         <div style="margin-bottom:14px">
             <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px">
                 <span>Beraberlik Oranı</span>
-                <span style="font-weight:700;color:var(--draw-yellow)">%@(s.Played > 0 ? Math.Round((double)s.Drawn / s.Played * 100, 1) : 0)</span>
+                <span style="font-weight:700;color:var(--draw-yellow)">%@(s.Oynanan > 0 ? Math.Round((double)s.Beraberlik / s.Oynanan * 100, 1) : 0)</span>
             </div>
             <div class="progress-bar">
-                <div class="progress-fill" style="width:@(s.Played > 0 ? s.Drawn * 100 / s.Played : 0)%;background:linear-gradient(90deg,var(--draw-yellow),#f97316)"></div>
+                <div class="progress-fill" style="width:@(s.Oynanan > 0 ? s.Beraberlik * 100 / s.Oynanan : 0)%;background:linear-gradient(90deg,var(--draw-yellow),#f97316)"></div>
             </div>
         </div>
         <div>
             <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px">
                 <span>Mağlubiyet Oranı</span>
-                <span style="font-weight:700;color:var(--loss-red)">%@(s.Played > 0 ? Math.Round((double)s.Lost / s.Played * 100, 1) : 0)</span>
+                <span style="font-weight:700;color:var(--loss-red)">%@(s.Oynanan > 0 ? Math.Round((double)s.Maglubiyet / s.Oynanan * 100, 1) : 0)</span>
             </div>
             <div class="progress-bar">
-                <div class="progress-fill" style="width:@(s.Played > 0 ? s.Lost * 100 / s.Played : 0)%;background:linear-gradient(90deg,var(--loss-red),#b91c1c)"></div>
+                <div class="progress-fill" style="width:@(s.Oynanan > 0 ? s.Maglubiyet * 100 / s.Oynanan : 0)%;background:linear-gradient(90deg,var(--loss-red),#b91c1c)"></div>
             </div>
         </div>
     </div>
