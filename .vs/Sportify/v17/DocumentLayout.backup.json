@@ -1,0 +1,326 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ONUR\\Desktop\\a\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\migrations\\20260313171338_addfavoriteteams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:migrations\\20260313171338_addfavoriteteams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\models\\errorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:models\\errorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\migrations\\20260312221002_addprofilresmiyolu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:migrations\\20260312221002_addprofilresmiyolu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\controllers\\sportapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:controllers\\sportapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\controllers\\standingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:controllers\\standingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\controllers\\teamscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:controllers\\teamscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\controllers\\playerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:controllers\\playerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\controllers\\accountcontroller.cs#l29-l37||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:controllers\\accountcontroller.cs#l29-l37||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\migrations\\20260311222345_emailonayeklendi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:migrations\\20260311222345_emailonayeklendi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\migrations\\20260311231449_epostaonaytablosueklendi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:migrations\\20260311231449_epostaonaytablosueklendi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\migrations\\20260306192729_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:migrations\\20260306192729_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\views\\account\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:views\\account\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|c:\\users\\onur\\desktop\\a\\migrations\\20260306231431_tr_ceviri.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E48261A5-5F7B-FDBE-FBBF-15E5981BF344}|Sportify.csproj|solutionrelative:migrations\\20260306231431_tr_ceviri.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "20260313171338_AddFavoriteTeams.cs",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Migrations\\20260313171338_AddFavoriteTeams.cs",
+              "RelativeDocumentMoniker": "Migrations\\20260313171338_AddFavoriteTeams.cs",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Migrations\\20260313171338_AddFavoriteTeams.cs",
+              "RelativeToolTip": "Migrations\\20260313171338_AddFavoriteTeams.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAxwC8AAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-14T00:07:36.497Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-13T17:01:59.477Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "20260312221002_AddProfilResmiYolu.cs",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Migrations\\20260312221002_AddProfilResmiYolu.cs",
+              "RelativeDocumentMoniker": "Migrations\\20260312221002_AddProfilResmiYolu.cs",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Migrations\\20260312221002_AddProfilResmiYolu.cs",
+              "RelativeToolTip": "Migrations\\20260312221002_AddProfilResmiYolu.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-13T17:01:52.15Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SportApiController.cs",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Controllers\\SportApiController.cs",
+              "RelativeDocumentMoniker": "Controllers\\SportApiController.cs",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Controllers\\SportApiController.cs",
+              "RelativeToolTip": "Controllers\\SportApiController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-13T17:01:49.225Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "StandingsController.cs",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Controllers\\StandingsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\StandingsController.cs",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Controllers\\StandingsController.cs",
+              "RelativeToolTip": "Controllers\\StandingsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-13T17:01:47.995Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "TeamsController.cs",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Controllers\\TeamsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\TeamsController.cs",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Controllers\\TeamsController.cs",
+              "RelativeToolTip": "Controllers\\TeamsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-13T17:01:11.415Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ErrorViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Models\\ErrorViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\ErrorViewModel.cs",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Models\\ErrorViewModel.cs",
+              "RelativeToolTip": "Models\\ErrorViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-07T00:28:56.675Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "20260311222345_EmailOnayEklendi.cs",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Migrations\\20260311222345_EmailOnayEklendi.cs",
+              "RelativeDocumentMoniker": "Migrations\\20260311222345_EmailOnayEklendi.cs",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Migrations\\20260311222345_EmailOnayEklendi.cs",
+              "RelativeToolTip": "Migrations\\20260311222345_EmailOnayEklendi.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-13T17:00:43.279Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "Data\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-07T00:28:45.687Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AccountController.cs#L29-L37",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Controllers\\AccountController.cs#L29-L37",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs#L29-L37",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Controllers\\AccountController.cs#L29-L37",
+              "RelativeToolTip": "Controllers\\AccountController.cs#L29-L37",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-12T21:48:57.155Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PlayersController.cs",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Controllers\\PlayersController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PlayersController.cs",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Controllers\\PlayersController.cs",
+              "RelativeToolTip": "Controllers\\PlayersController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T21:50:37.396Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "20260311231449_EpostaOnayTablosuEklendi.cs",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Migrations\\20260311231449_EpostaOnayTablosuEklendi.cs",
+              "RelativeDocumentMoniker": "Migrations\\20260311231449_EpostaOnayTablosuEklendi.cs",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Migrations\\20260311231449_EpostaOnayTablosuEklendi.cs",
+              "RelativeToolTip": "Migrations\\20260311231449_EpostaOnayTablosuEklendi.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-13T17:00:38.116Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Profile.cshtml",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Views\\Account\\Profile.cshtml",
+              "RelativeDocumentMoniker": "Views\\Account\\Profile.cshtml",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Views\\Account\\Profile.cshtml",
+              "RelativeToolTip": "Views\\Account\\Profile.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-13T16:45:07.45Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-03-06T23:20:38.243Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Controllers\\AccountController.cs",
+              "ViewState": "AgIAABgBAAAAAAAAAAAUwBAAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T21:33:39.284Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Views\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "Views\\Account\\Login.cshtml",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Views\\Account\\Login.cshtml",
+              "RelativeToolTip": "Views\\Account\\Login.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-11T21:59:37.412Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "20260306192729_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Migrations\\20260306192729_InitialCreate.cs",
+              "RelativeDocumentMoniker": "Migrations\\20260306192729_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Migrations\\20260306192729_InitialCreate.cs",
+              "RelativeToolTip": "Migrations\\20260306192729_InitialCreate.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-06T22:41:11.018Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "_ViewImports.cshtml",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Views\\_ViewImports.cshtml",
+              "RelativeDocumentMoniker": "Views\\_ViewImports.cshtml",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Views\\_ViewImports.cshtml",
+              "RelativeToolTip": "Views\\_ViewImports.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-11T21:59:29.559Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "20260306231431_TR_Ceviri.cs",
+              "DocumentMoniker": "C:\\Users\\ONUR\\Desktop\\a\\Migrations\\20260306231431_TR_Ceviri.cs",
+              "RelativeDocumentMoniker": "Migrations\\20260306231431_TR_Ceviri.cs",
+              "ToolTip": "C:\\Users\\ONUR\\Desktop\\a\\Migrations\\20260306231431_TR_Ceviri.cs",
+              "RelativeToolTip": "Migrations\\20260306231431_TR_Ceviri.cs",
+              "ViewState": "AgIAAAQBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-06T23:16:24.097Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

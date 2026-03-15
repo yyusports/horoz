@@ -17,22 +17,22 @@ namespace Sportify.Controllers
         [HttpGet("live")]
         public async Task<IActionResult> LiveMatches()
         {
-            var matches = await _sport.GetLiveMatchesAsync();
-            return Ok(new { data = matches, updatedAt = DateTime.Now });
+            var maclar = await _sport.GetLiveMatchesAsync();
+            return Ok(new { data = maclar, updatedAt = DateTime.Now });
         }
 
         [HttpGet("today")]
         public async Task<IActionResult> TodayMatches()
         {
-            var matches = await _sport.GetTodayMatchesAsync();
-            return Ok(new { data = matches, updatedAt = DateTime.Now });
+            var maclar = await _sport.GetTodayMatchesAsync();
+            return Ok(new { data = maclar, updatedAt = DateTime.Now });
         }
 
         [HttpGet("standings")]
         public async Task<IActionResult> Standings([FromQuery] int leagueId = 39, [FromQuery] int season = 2024)
         {
-            var standings = await _sport.GetStandingsAsync(leagueId, season);
-            return Ok(new { data = standings, updatedAt = DateTime.Now });
+            var puanDurumu = await _sport.GetStandingsAsync(leagueId, season);
+            return Ok(new { data = puanDurumu, updatedAt = DateTime.Now });
         }
 
         [HttpGet("dashboard")]

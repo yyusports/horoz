@@ -1,0 +1,46 @@
+@model Sportify.Models.ViewModels.CompleteRegisterViewModel
+
+@{
+    ViewData["Title"] = "Kayıt Ol - Adım 3";
+}
+
+<div class="auth-wrapper">
+    <div class="auth-card fade-in">
+        <div class="auth-header">
+            <div class="auth-logo">⚽</div>
+            <h2 class="auth-title">Kayıt Ol - Son Adım</h2>
+            <p class="auth-subtitle">E-posta (@Model.Email) doğrulandı! Bilgilerinizi tamamlayın.</p>
+        </div>
+
+        <form asp-action="CompleteRegistration" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Email" />
+
+            <div asp-validation-summary="All" class="auth-alert-error"></div>
+
+            <div class="form-group">
+                <label asp-for="KullaniciAdi" class="form-label"></label>
+                <input asp-for="KullaniciAdi" class="form-input" placeholder="kullanici_adi" required />
+                <span asp-validation-for="KullaniciAdi" class="form-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Sifre" class="form-label"></label>
+                <input asp-for="Sifre" type="password" class="form-input" placeholder="En az 6 karakter" required />
+                <span asp-validation-for="Sifre" class="form-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SifreTekrar" class="form-label"></label>
+                <input asp-for="SifreTekrar" type="password" class="form-input" placeholder="Şifreyi tekrar girin" required />
+                <span asp-validation-for="SifreTekrar" class="form-error"></span>
+            </div>
+
+            <button type="submit" class="auth-btn">Kaydı Tamamla</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
