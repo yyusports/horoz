@@ -1,0 +1,43 @@
+@model Sportify.Models.ViewModels.EmailRegisterViewModel
+
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="auth-wrapper">
+    <div class="auth-card fade-in">
+        <div class="auth-header">
+            <div class="auth-logo">⚽</div>
+            <h2 class="auth-title">Kayıt Ol - Adım 1</h2>
+            <p class="auth-subtitle">E-posta adresinizi doğrulayarak başlayın</p>
+        </div>
+
+        @if (TempData["Mesaj"] != null)
+        {
+            <div class="auth-alert auth-alert-success">✅ @TempData["Mesaj"]</div>
+        }
+
+        <form asp-action="Register" method="post">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="All" class="auth-alert-error"></div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" type="email" class="form-input" placeholder="ornek@email.com" required />
+                <span asp-validation-for="Email" class="form-error"></span>
+            </div>
+
+            <button type="submit" id="btnRegister" class="auth-btn">Doğrulama Kodu Gönder</button>
+        </form>
+
+        <p class="auth-footer">
+            Zaten hesabın var mı?
+            <a asp-controller="Account" asp-action="Login" class="auth-link">Giriş Yap</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

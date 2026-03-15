@@ -1,4 +1,4 @@
-@model List<Sportify.Models.Player>
+@model List<Sportify.Models.Oyuncu>
 @{
     ViewData["Title"] = "Gol Krallığı";
     var leagueId = ViewBag.LeagueId as int? ?? 39;
@@ -47,30 +47,30 @@ else
             var p = Model[i];
             <a href="/Players/Detail/@p.Id" class="player-card fade-in">
                 <div class="player-rank">@(i + 1)</div>
-                <img class="player-photo" src="@p.Photo" alt="@p.Name" onerror="this.src='https://via.placeholder.com/80x80/1a2236/8896b3?text=?'" />
-                <div class="player-name">@p.Name</div>
+                <img class="player-photo" src="@p.Foto" alt="@p.Ad" onerror="this.src='https://via.placeholder.com/80x80/1a2236/8896b3?text=?'" />
+                <div class="player-name">@p.Ad</div>
                 <div class="player-meta">
-                    @if (!string.IsNullOrEmpty(p.TeamLogo))
+                    @if (!string.IsNullOrEmpty(p.TakimLogo))
                     {
-                        <img src="@p.TeamLogo" alt="@p.TeamName" onerror="this.style.display='none'" />
+                        <img src="@p.TakimLogo" alt="@p.TakimAdi" onerror="this.style.display='none'" />
                     }
-                    @p.TeamName
+                    @p.TakimAdi
                 </div>
-                @if (p.Stats?.Rating > 0)
+                @if (p.Istatistikler?.Reyting > 0)
                 {
-                    <div class="rating-badge">⭐ @p.Stats.Rating.ToString("F2")</div>
+                    <div class="rating-badge">⭐ @p.Istatistikler.Reyting.ToString("F2")</div>
                 }
                 <div class="player-stats-row">
                     <div class="player-stat-item">
-                        <div class="player-stat-val">@(p.Stats?.Goals ?? 0)</div>
+                        <div class="player-stat-val">@(p.Istatistikler?.Goller ?? 0)</div>
                         <div class="player-stat-lbl">Gol</div>
                     </div>
                     <div class="player-stat-item">
-                        <div class="player-stat-val">@(p.Stats?.Assists ?? 0)</div>
+                        <div class="player-stat-val">@(p.Istatistikler?.Asistler ?? 0)</div>
                         <div class="player-stat-lbl">Asist</div>
                     </div>
                     <div class="player-stat-item">
-                        <div class="player-stat-val">@(p.Stats?.Appearances ?? 0)</div>
+                        <div class="player-stat-val">@(p.Istatistikler?.MacSayisi ?? 0)</div>
                         <div class="player-stat-lbl">Maç</div>
                     </div>
                 </div>

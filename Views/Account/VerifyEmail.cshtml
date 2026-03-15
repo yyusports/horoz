@@ -1,0 +1,40 @@
+@{
+    ViewData["Title"] = "E-posta Doğrulama";
+}
+
+<div class="auth-wrapper">
+    <div class="auth-card fade-in">
+        <div class="auth-header">
+            <div class="auth-logo">✉️</div>
+            <h2 class="auth-title">E-posta Doğrulama</h2>
+            <p class="auth-subtitle"><b>@ViewBag.Email</b> adresine gönderilen 6 haneli kodu giriniz.</p>
+        </div>
+
+        @if (ViewBag.Hata != null)
+        {
+            <div class="auth-alert-error">❌ @ViewBag.Hata</div>
+        }
+
+        @if (TempData["Hata"] != null)
+        {
+            <div class="auth-alert-error">⚠️ @TempData["Hata"]</div>
+        }
+
+        <form asp-action="VerifyEmail" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="email" value="@ViewBag.Email" />
+
+            <div class="form-group">
+                <label class="form-label">Doğrulama Kodu</label>
+                <input name="kod" class="form-input" placeholder="6 Haneli Kod" maxlength="6" required autofocus />
+            </div>
+
+            <button type="submit" class="auth-btn">Doğrula</button>
+        </form>
+
+        <p class="auth-footer">
+            Kod gelmedi mi? 
+            <a asp-action="Register" class="auth-link">Tekrar Kayıt Ol</a>
+        </p>
+    </div>
+</div>

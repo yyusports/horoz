@@ -14,10 +14,10 @@ namespace Sportify.Controllers
 
         public async Task<IActionResult> Index(int leagueId = 39, int season = 2024)
         {
-            var standings = await _sport.GetStandingsAsync(leagueId, season);
+            var puanDurumu = await _sport.GetStandingsAsync(leagueId, season);
             ViewBag.LeagueId = leagueId;
             ViewBag.Season = season;
-            return View(standings);
+            return View(puanDurumu);
         }
     }
 }
